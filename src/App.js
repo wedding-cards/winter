@@ -10,6 +10,7 @@ import GallerySection from './components/GallerySection';
 import LocationSection from './components/LocationSection';
 import GuestbookSection from './components/GuestbookSection';
 import AccountSection from './components/AccountSection';
+import LoveQuoteSection from './components/LoveQuoteSection';
 import Footer from './components/Footer';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
       <LocationSection />
       <GuestbookSection />
       <AccountSection />
+      <LoveQuoteSection />
       <Footer />
     </div>
   );

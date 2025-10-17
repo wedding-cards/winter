@@ -130,7 +130,7 @@ const DateSection = () => {
             </div>
           </div>
           <p className="countdown-message">
-            민석 <span className="heart-emoji">♥</span> 예은 결혼식이 {timeLeft.days}일 {timeLeft.isPast ? '지났습니다' : '남았습니다'}.
+            민석 <span className="heart-emoji">♥</span> 수진 결혼식이 {timeLeft.days}일 {timeLeft.isPast ? '지났습니다' : '남았습니다'}.
           </p>
         </div>
       </div>

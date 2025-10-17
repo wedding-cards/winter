@@ -49,7 +49,7 @@ const InvitationSection = () => {
               </div>
               <div className="child-info">
                 <span className="child-relation">의 딸</span>
-                <strong className="child-name">예은</strong>
+                <strong className="child-name">수진</strong>
               </div>
             </div>
           </div>

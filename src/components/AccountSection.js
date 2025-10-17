@@ -134,7 +134,7 @@ const AccountSection = () => {
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">신부</span>
-                  <span className="account-name">이예은</span>
+                  <span className="account-name">강수진</span>
                 </div>
                 <div className="account-row">
                   <span className="account-number">카카오 3333031697843</span>

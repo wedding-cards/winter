@@ -16,7 +16,7 @@ const HeroSection = () => {
           <div className="couple-names">
             <span className="groom-name">민석</span>
             <span className="heart">♥</span>
-            <span className="bride-name">예은</span>
+            <span className="bride-name">수진</span>
           </div>
           <div className="wedding-time">오후 3시</div>
           <div className="wedding-venue">세인트 메리엘</div>

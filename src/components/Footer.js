@@ -4,13 +4,7 @@ const Footer = () => {
   return (
     <footer className="main-footer">
       <div className="container">
-        <div className="footer-quote">
-          <p>"모든 새로운 시작은 다른 시작의 끝에서 나온다"</p>
-          <p className="quote-author">- 세네카 -</p>
-        </div>
-        <div className="footer-couple">
-          <p>민석 ♥ 예은</p>
-        </div>
+        <p className="copyright">© 2025 민석 ♥ 수진. All rights reserved.</p>
       </div>
     </footer>
   );
