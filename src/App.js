@@ -21,6 +21,13 @@ function App() {
 
   return (
     <div className={`App ${isLoaded ? 'fade-in' : ''}`}>
+      {/* 눈 내리는 효과 레이어 */}
+      <div className="snow-container">
+        <div className="snow-layer snow-layer-1"></div>
+        <div className="snow-layer snow-layer-2"></div>
+        <div className="snow-layer snow-layer-3"></div>
+      </div>
+      
       <MusicPlayer />
       <HeroSection />
       <InvitationSection />
