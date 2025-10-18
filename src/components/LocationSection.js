@@ -7,48 +7,63 @@ const LocationSection = () => {
   const [mapRef, mapVisible] = useScrollAnimation({ threshold: 0.2 });
 
   useEffect(() => {
-    if (!mapElement.current || !window.naver) return;
+    if (!mapElement.current) return;
 
-    // 세인트 메리엘 정확한 좌표 (강남역 인근)
-    const location = new window.naver.maps.LatLng(37.496105, 127.033005);
-    
-    const mapOptions = {
-      center: location,
-      zoom: 17,
-      zoomControl: true,
-      zoomControlOptions: {
-        position: window.naver.maps.Position.TOP_RIGHT,
-      },
+    // Naver Maps API가 로드될 때까지 대기
+    const initMap = () => {
+      if (!window.naver || !window.naver.maps) {
+        // 로드되지 않았다면 수동으로 로드 시도
+        if (typeof window.loadNaverMaps === 'function') {
+          window.loadNaverMaps();
+        }
+        // 다시 시도
+        setTimeout(initMap, 500);
+        return;
+      }
+
+      // 세인트 메리엘 정확한 좌표 (강남역 인근)
+      const location = new window.naver.maps.LatLng(37.496105, 127.033005);
+      
+      const mapOptions = {
+        center: location,
+        zoom: 17,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: window.naver.maps.Position.TOP_RIGHT,
+        },
+      };
+
+      const map = new window.naver.maps.Map(mapElement.current, mapOptions);
+      
+      const marker = new window.naver.maps.Marker({
+        position: location,
+        map: map,
+        title: '세인트 메리엘',
+      });
+
+      const infoWindow = new window.naver.maps.InfoWindow({
+        content: `
+          <div style="padding: 12px 15px; font-size: 14px; font-family: 'Noto Sans KR', sans-serif;">
+            <strong style="font-size: 15px; color: #8B1538;">세인트 메리엘</strong><br/>
+            <span style="font-size: 12px; color: #666; margin-top: 4px; display: block;">서울 강남구 논현로79길 72</span>
+            <span style="font-size: 11px; color: #999;">B1F, 1F, 2F</span>
+          </div>
+        `,
+      });
+
+      window.naver.maps.Event.addListener(marker, 'click', () => {
+        if (infoWindow.getMap()) {
+          infoWindow.close();
+        } else {
+          infoWindow.open(map, marker);
+        }
+      });
+
+      // 초기에 정보창 표시
+      infoWindow.open(map, marker);
     };
 
-    const map = new window.naver.maps.Map(mapElement.current, mapOptions);
-    
-    const marker = new window.naver.maps.Marker({
-      position: location,
-      map: map,
-      title: '세인트 메리엘',
-    });
-
-    const infoWindow = new window.naver.maps.InfoWindow({
-      content: `
-        <div style="padding: 12px 15px; font-size: 14px; font-family: 'Noto Sans KR', sans-serif;">
-          <strong style="font-size: 15px; color: #8B1538;">세인트 메리엘</strong><br/>
-          <span style="font-size: 12px; color: #666; margin-top: 4px; display: block;">서울 강남구 논현로79길 72</span>
-          <span style="font-size: 11px; color: #999;">B1F, 1F, 2F</span>
-        </div>
-      `,
-    });
-
-    window.naver.maps.Event.addListener(marker, 'click', () => {
-      if (infoWindow.getMap()) {
-        infoWindow.close();
-      } else {
-        infoWindow.open(map, marker);
-      }
-    });
-
-    // 초기에 정보창 표시
-    infoWindow.open(map, marker);
+    initMap();
   }, []);
 
   const handleNavigation = (type) => {

@@ -38,28 +38,66 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Preload critical image -->
+    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/couple-main.jpg" />
     
-    <!-- Google Fonts -->
+    <!-- Font Awesome - 비동기 로딩 -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" /></noscript>
+    
+    <!-- Google Fonts - 비동기 로딩 (실제 사용하는 폰트만) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Nanum+Myeongjo:wght@400;700;800&family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet"></noscript>
     
-    <!-- Naver Maps API -->
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=r495xzxrv7"></script>
-    
-    <!-- Kakao SDK -->
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" 
-            integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" 
-            crossorigin="anonymous"></script>
+    <!-- Naver Maps API - 지연 로딩 -->
     <script>
-      // Kakao SDK 초기화 - JavaScript Key를 발급받아 아래에 입력하세요
-      if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init('567e7c42c3243a0d510faa9b02f3341b'); // ⚠️ 실제 JavaScript 키로 교체하세요
-        console.log('Kakao SDK 초기화 완료:', window.Kakao.isInitialized());
+      // Naver Maps API를 필요할 때만 로드하도록 지연
+      window.loadNaverMaps = function() {
+        if (!window.naver || !window.naver.maps) {
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = 'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=r495xzxrv7';
+          document.head.appendChild(script);
+        }
+      };
+      
+      // IntersectionObserver를 사용해 지도 섹션이 보일 때 로드
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              window.loadNaverMaps();
+              observer.disconnect();
+            }
+          });
+        }, { rootMargin: '200px' });
+        
+        window.addEventListener('DOMContentLoaded', function() {
+          var mapElement = document.getElementById('map');
+          if (mapElement) {
+            observer.observe(mapElement);
+          }
+        });
+      } else {
+        // IntersectionObserver를 지원하지 않는 경우 일정 시간 후 로드
+        window.addEventListener('load', function() {
+          setTimeout(window.loadNaverMaps, 2000);
+        });
       }
     </script>
+    
+    <!-- Kakao SDK - 비동기 로딩 -->
+    <script async src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" 
+            integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" 
+            crossorigin="anonymous"
+            onload="
+              if (window.Kakao && !window.Kakao.isInitialized()) {
+                window.Kakao.init('567e7c42c3243a0d510faa9b02f3341b');
+                console.log('Kakao SDK 초기화 완료:', window.Kakao.isInitialized());
+              }
+            "></script>
     
     <!-- JSON-LD for SEO -->
     <script type="application/ld+json">
