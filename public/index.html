@@ -48,7 +48,53 @@
     
     <!-- Naver Maps API -->
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=r495xzxrv7"></script>
-    <!-- YOUR_CLIENT_ID를 발급받은 Client ID로 교체 -->
+    
+    <!-- Kakao SDK -->
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" 
+            integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" 
+            crossorigin="anonymous"></script>
+    <script>
+      // Kakao SDK 초기화 - JavaScript Key를 발급받아 아래에 입력하세요
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init('567e7c42c3243a0d510faa9b02f3341b'); // ⚠️ 실제 JavaScript 키로 교체하세요
+        console.log('Kakao SDK 초기화 완료:', window.Kakao.isInitialized());
+      }
+    </script>
+    
+    <!-- JSON-LD for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "민석 ❤️ 수진 결혼식",
+      "description": "따뜻한 겨울날, 두 사람이 하나 되는 소중한 순간에 여러분을 초대합니다",
+      "startDate": "2025-12-13T15:00:00+09:00",
+      "endDate": "2025-12-13T17:00:00+09:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "세인트 메리엘",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "논현로79길 72",
+          "addressLocality": "강남구",
+          "addressRegion": "서울",
+          "postalCode": "06239",
+          "addressCountry": "KR"
+        }
+      },
+      "image": "https://minseok-loves-sujin.netlify.app/og-image.jpg",
+      "organizer": {
+        "@type": "Person",
+        "name": "김민석 & 강수진"
+      },
+      "performer": {
+        "@type": "PerformingGroup",
+        "name": "신랑 김민석 & 신부 강수진"
+      }
+    }
+    </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.

@@ -12,7 +12,11 @@ const LoveQuoteSection = () => {
           className={`love-quote-content animate-on-scroll ${sectionVisible ? 'visible' : ''}`}
         >
           <div className="love-quote-image">
-            <img src="/snap.jpeg" alt="우리의 순간" />
+            <img 
+              src="/snap.jpeg" 
+              alt="민석과 수진의 자연스러운 일상 스냅 사진 - 서로를 바라보며 미소 짓는 모습" 
+              loading="lazy"
+            />
           </div>
           <div className="love-quote-text">
             <p className="quote-main">

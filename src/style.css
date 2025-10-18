@@ -1365,6 +1365,108 @@ section {
     }
 }
 
+/* 공유하기 섹션 */
+.share-section {
+    padding: 60px 0;
+    background: linear-gradient(180deg, var(--secondary-color) 0%, var(--background) 100%);
+}
+
+.share-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.share-title {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 26px;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.share-description {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.share-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 35px;
+    border: none;
+    border-radius: 12px;
+    background: #FEE500;
+    color: #3C1E1E;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(254, 229, 0, 0.3);
+}
+
+.share-copy-btn:hover {
+    background: #FFD700;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(254, 229, 0, 0.5);
+}
+
+.share-copy-btn:active {
+    transform: translateY(-1px);
+}
+
+.share-copy-btn i {
+    font-size: 18px;
+}
+
+/* 반응형 - 공유하기 섹션 */
+@media (max-width: 768px) {
+    .share-section {
+        padding: 50px 0;
+    }
+    
+    .share-title {
+        font-size: 22px;
+    }
+    
+    .share-copy-btn {
+        padding: 13px 30px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .share-section {
+        padding: 40px 0;
+    }
+    
+    .share-content {
+        padding: 0 15px;
+    }
+    
+    .share-title {
+        font-size: 20px;
+    }
+    
+    .share-description {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
+    .share-copy-btn {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+    
+    .share-copy-btn i {
+        font-size: 16px;
+    }
+}
+
 /* 푸터 */
 .main-footer {
     background: var(--background-secondary);

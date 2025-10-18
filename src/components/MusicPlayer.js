@@ -17,8 +17,8 @@ const MusicPlayer = () => {
             setShowPrompt(false);
             hasInteracted.current = true;
           })
-          .catch(e => {
-            console.log('자동 재생이 차단되었습니다. 사용자 클릭을 기다립니다.');
+          .catch(() => {
+            // 자동 재생이 차단됨 - 사용자 상호작용 대기
             setIsPlaying(false);
             setShowPrompt(true);
           });
@@ -37,7 +37,9 @@ const MusicPlayer = () => {
             setShowPrompt(false);
             hasInteracted.current = true;
           })
-          .catch(e => console.log('재생 실패:', e));
+          .catch(() => {
+            // 재생 실패 - 무시
+          });
       }
     };
 
@@ -62,8 +64,8 @@ const MusicPlayer = () => {
             setIsPlaying(true);
             setShowPrompt(false);
           })
-          .catch(e => {
-            console.log('재생 실패:', e);
+          .catch(() => {
+            // 재생 실패 - 무시
           });
       }
     }

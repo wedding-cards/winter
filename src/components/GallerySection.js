@@ -113,7 +113,11 @@ const GallerySection = () => {
               className="gallery-item" 
               onClick={() => openModal(index)}
             >
-              <img src={src} alt={`웨딩 사진 ${index + 1}`} loading="lazy" />
+              <img 
+                src={src} 
+                alt={`민석과 수진의 웨딩 사진 ${index + 1} - 결혼식 스냅 사진`} 
+                loading="lazy" 
+              />
               <div className="gallery-overlay">
                 <i className="fas fa-search-plus"></i>
               </div>

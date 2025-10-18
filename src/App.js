@@ -11,6 +11,7 @@ import LocationSection from './components/LocationSection';
 import GuestbookSection from './components/GuestbookSection';
 import AccountSection from './components/AccountSection';
 import LoveQuoteSection from './components/LoveQuoteSection';
+import ShareSection from './components/ShareSection';
 import Footer from './components/Footer';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
       <GuestbookSection />
       <AccountSection />
       <LoveQuoteSection />
+      <ShareSection />
       <Footer />
     </div>
   );

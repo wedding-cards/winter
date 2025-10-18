@@ -25,7 +25,12 @@ const HeroSection = () => {
           ref={imageRef}
           className={`hero-image animate-scale ${imageVisible ? 'visible' : ''}`}
         >
-          <img src="/assets/images/couple-main.jpg" alt="신랑신부 사진" id="mainPhoto" />
+          <img 
+            src="/assets/images/couple-main.jpg" 
+            alt="신랑 민석과 신부 수진의 웨딩 사진 - 행복한 미소를 짓고 있는 두 사람" 
+            id="mainPhoto"
+            loading="lazy"
+          />
         </div>
       </div>
     </header>

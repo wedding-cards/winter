@@ -102,7 +102,7 @@ const AccountSection = () => {
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">어머니</span>
-                  <span className="account-name">땡땡땡</span>
+                  <span className="account-name">김민석</span>
                 </div>
                 <div className="account-row">
                   <span className="account-number">기업 30303029222</span>
@@ -154,7 +154,7 @@ const AccountSection = () => {
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">아버지</span>
-                  <span className="account-name">이이이</span>
+                  <span className="account-name">강수진</span>
                 </div>
                 <div className="account-row">
                   <span className="account-number">신한 998877665544</span>
@@ -174,7 +174,7 @@ const AccountSection = () => {
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">어머니</span>
-                  <span className="account-name">예예예</span>
+                  <span className="account-name">강수진</span>
                 </div>
                 <div className="account-row">
                   <span className="account-number">농협 1029384756</span>
