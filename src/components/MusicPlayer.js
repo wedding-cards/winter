@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPrompt, setShowPrompt] = useState(false);
+  const hasInteracted = useRef(false);
 
   useEffect(() => {
     const audio = document.getElementById('backgroundMusic');
@@ -14,6 +15,7 @@ const MusicPlayer = () => {
           .then(() => {
             setIsPlaying(true);
             setShowPrompt(false);
+            hasInteracted.current = true;
           })
           .catch(e => {
             console.log('자동 재생이 차단되었습니다. 사용자 클릭을 기다립니다.');
@@ -28,28 +30,25 @@ const MusicPlayer = () => {
 
     // 사용자의 첫 번째 클릭/터치 시 재생
     const handleFirstInteraction = () => {
-      if (!isPlaying && audio) {
+      if (!hasInteracted.current && audio) {
         audio.play()
           .then(() => {
             setIsPlaying(true);
             setShowPrompt(false);
+            hasInteracted.current = true;
           })
           .catch(e => console.log('재생 실패:', e));
-        
-        // 이벤트 리스너 제거
-        document.removeEventListener('click', handleFirstInteraction);
-        document.removeEventListener('touchstart', handleFirstInteraction);
       }
     };
 
-    document.addEventListener('click', handleFirstInteraction);
-    document.addEventListener('touchstart', handleFirstInteraction);
+    document.addEventListener('click', handleFirstInteraction, { once: true });
+    document.addEventListener('touchstart', handleFirstInteraction, { once: true });
 
     return () => {
       document.removeEventListener('click', handleFirstInteraction);
       document.removeEventListener('touchstart', handleFirstInteraction);
     };
-  }, [isPlaying]);
+  }, []);
 
   const toggleMusic = () => {
     const audio = document.getElementById('backgroundMusic');
