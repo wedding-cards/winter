@@ -1,7 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const MusicPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  useEffect(() => {
+    const audio = document.getElementById('backgroundMusic');
+    if (audio) {
+      audio.play().catch(e => {
+        console.log('자동 재생이 차단되었습니다. 사용자 상호작용 후 재생됩니다.');
+        setIsPlaying(false);
+      });
+    }
+  }, []);
 
   const toggleMusic = () => {
     const audio = document.getElementById('backgroundMusic');
