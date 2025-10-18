@@ -41,7 +41,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 200%;
-    background-image: 
+    background-image:
         radial-gradient(3px 3px at 10% 20%, white, transparent),
         radial-gradient(2px 2px at 40% 60%, rgba(255, 255, 255, 0.8), transparent),
         radial-gradient(2px 2px at 80% 10%, rgba(255, 255, 255, 0.9), transparent),
@@ -65,7 +65,7 @@ body::after {
     left: 0;
     width: 100%;
     height: 200%;
-    background-image: 
+    background-image:
         radial-gradient(1px 1px at 15% 30%, rgba(255, 255, 255, 0.6), transparent),
         radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.5), transparent),
         radial-gradient(1px 1px at 85% 20%, rgba(255, 255, 255, 0.7), transparent),
@@ -115,7 +115,7 @@ body::after {
 
 /* 눈송이 레이어 1 - 중간 크기 */
 .snow-layer-1 {
-    background-image: 
+    background-image:
         radial-gradient(2px 2px at 5% 10%, rgba(255, 255, 255, 0.8), transparent),
         radial-gradient(2px 2px at 35% 25%, rgba(255, 255, 255, 0.7), transparent),
         radial-gradient(2px 2px at 65% 40%, rgba(255, 255, 255, 0.9), transparent),
@@ -131,7 +131,7 @@ body::after {
 
 /* 눈송이 레이어 2 - 느린 큰 눈 */
 .snow-layer-2 {
-    background-image: 
+    background-image:
         radial-gradient(3px 3px at 12% 18%, rgba(255, 255, 255, 0.9), transparent),
         radial-gradient(3px 3px at 48% 35%, rgba(255, 255, 255, 0.8), transparent),
         radial-gradient(3px 3px at 78% 52%, rgba(255, 255, 255, 1), transparent),
@@ -145,7 +145,7 @@ body::after {
 
 /* 눈송이 레이어 3 - 빠른 작은 눈 */
 .snow-layer-3 {
-    background-image: 
+    background-image:
         radial-gradient(1px 1px at 8% 12%, rgba(255, 255, 255, 0.5), transparent),
         radial-gradient(1px 1px at 28% 28%, rgba(255, 255, 255, 0.6), transparent),
         radial-gradient(1px 1px at 52% 42%, rgba(255, 255, 255, 0.4), transparent),
@@ -230,11 +230,25 @@ body::after {
     top: 20px;
     right: 20px;
     z-index: 100000;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* 갤러리 모달이 열렸을 때 음악 버튼 숨기기 */
+body[style*="overflow: hidden"] .music-control {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* 갤러리 모달이 열렸을 때 모든 섹션의 position 제거하여 z-index 충돌 방지 */
+body[style*="overflow: hidden"] section {
+    position: static !important;
+    z-index: auto !important;
 }
 
 .music-btn {
-    width: 50px;
-    height: 50px;
+    width: 36px;
+    height: 36px;
     border: none;
     background: rgba(255, 255, 255, 0.95);
     color: var(--primary-color);
@@ -246,7 +260,7 @@ body::after {
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px var(--shadow);
     backdrop-filter: blur(10px);
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .music-btn:hover {
@@ -408,8 +422,6 @@ body::after {
 /* 섹션 공통 스타일 */
 section {
     padding: 60px 0;
-    position: relative;
-    z-index: 1;
 }
 
 .section-title {
@@ -744,16 +756,18 @@ section {
 .gallery-modal {
     display: flex;
     position: fixed;
-    z-index: 100001;
+    z-index: 1000000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(245, 245, 245, 0.98);
+    background: rgba(248, 248, 248, 0.99);
     flex-direction: column;
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.3s ease;
+    overflow: hidden;
+    padding: 70px 0 100px 0;
 }
 
 @keyframes fadeIn {
@@ -764,11 +778,11 @@ section {
 .close-modal {
     position: fixed;
     top: 20px;
-    right: 30px;
+    right: 20px;
     color: #333;
     font-size: 32px;
     cursor: pointer;
-    z-index: 2002;
+    z-index: 1000002;
     width: 45px;
     height: 45px;
     display: flex;
@@ -787,26 +801,28 @@ section {
 .modal-content-wrapper {
     position: relative;
     max-width: 90%;
-    max-height: 70vh;
+    max-height: calc(100vh - 240px);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1000001;
 }
 
 .modal-main-image {
     max-width: 100%;
-    max-height: 70vh;
+    max-height: calc(100vh - 240px);
     border-radius: 10px;
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.15);
     animation: zoomIn 0.3s ease;
+    object-fit: contain;
 }
 
 @keyframes zoomIn {
-    from { 
+    from {
         opacity: 0;
         transform: scale(0.8);
     }
-    to { 
+    to {
         opacity: 1;
         transform: scale(1);
     }
@@ -815,12 +831,12 @@ section {
 /* 페이지네이션 도트 */
 .pagination-dots {
     position: fixed;
-    bottom: 120px;
+    bottom: 105px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
-    z-index: 2001;
+    z-index: 1000002;
 }
 
 .pagination-dots .dot {
@@ -857,7 +873,7 @@ section {
     cursor: pointer;
     color: #333;
     transition: all 0.3s ease;
-    z-index: 2001;
+    z-index: 1000002;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -869,11 +885,11 @@ section {
 }
 
 .modal-nav-btn.prev-btn {
-    left: 20px;
+    left: 10px;
 }
 
 .modal-nav-btn.next-btn {
-    right: 20px;
+    right: 10px;
 }
 
 /* 하단 썸네일 네비게이션 */
@@ -882,23 +898,24 @@ section {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 15px 0;
-    z-index: 2001;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 12px 0;
+    z-index: 1000002;
     backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .thumbnail-container {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     overflow-x: auto;
-    padding: 0 20px;
+    padding: 0 15px;
     scroll-behavior: smooth;
 }
 
 .thumbnail-container::-webkit-scrollbar {
-    height: 5px;
+    height: 4px;
 }
 
 .thumbnail-container::-webkit-scrollbar-track {
@@ -907,17 +924,17 @@ section {
 
 .thumbnail-container::-webkit-scrollbar-thumb {
     background: var(--primary-color);
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 .thumbnail-item {
     flex-shrink: 0;
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
-    border: 3px solid transparent;
+    border: 2px solid transparent;
     transition: all 0.3s ease;
     opacity: 0.5;
 }
@@ -1331,11 +1348,11 @@ section {
     .love-quote-section {
         padding: 60px 0;
     }
-    
+
     .love-quote-image img {
         max-width: 400px;
     }
-    
+
     .quote-main {
         font-size: 18px;
     }
@@ -1345,21 +1362,21 @@ section {
     .love-quote-section {
         padding: 50px 0;
     }
-    
+
     .love-quote-image {
         margin-bottom: 30px;
     }
-    
+
     .love-quote-image img {
         max-width: 100%;
         border-radius: 15px;
     }
-    
+
     .quote-main {
         font-size: 16px;
         line-height: 1.7;
     }
-    
+
     .love-quote-text .quote-author {
         font-size: 13px;
     }
@@ -1428,11 +1445,11 @@ section {
     .share-section {
         padding: 50px 0;
     }
-    
+
     .share-title {
         font-size: 22px;
     }
-    
+
     .share-copy-btn {
         padding: 13px 30px;
         font-size: 15px;
@@ -1443,25 +1460,25 @@ section {
     .share-section {
         padding: 40px 0;
     }
-    
+
     .share-content {
         padding: 0 15px;
     }
-    
+
     .share-title {
         font-size: 20px;
     }
-    
+
     .share-description {
         font-size: 14px;
         margin-bottom: 20px;
     }
-    
+
     .share-copy-btn {
         padding: 12px 25px;
         font-size: 14px;
     }
-    
+
     .share-copy-btn i {
         font-size: 16px;
     }
@@ -1492,36 +1509,36 @@ section {
     .container {
         padding: 0 15px;
     }
-    
+
     .couple-names {
         font-size: 32px;
     }
-    
+
     .hero-image img {
         width: 250px;
         height: 320px;
     }
-    
+
     .countdown {
         gap: 15px;
     }
-    
+
     .countdown-item {
         min-width: 70px;
         padding: 15px 10px;
     }
-    
+
     .gallery-grid {
         gap: 10px;
         margin: 0 15px;
     }
-    
+
     .music-control {
         top: 15px;
         right: 15px;
         padding: 8px 12px;
     }
-    
+
     .music-title {
         font-size: 11px;
     }
@@ -1822,191 +1839,191 @@ section {
         padding: 25px 15px;
         margin: 0 15px;
     }
-    
+
     .countdown-single-row {
         gap: 5px;
     }
-    
+
     .countdown-group {
         gap: 4px;
     }
-    
+
     .countdown-number-inline {
         font-size: 30px;
     }
-    
+
     .countdown-colon {
         font-size: 16px;
         margin: 0 6px;
     }
-    
+
     .countdown-label-inline {
         font-size: 9px;
         letter-spacing: 1px;
     }
-    
+
     .countdown-message {
         font-size: 14px;
         margin-top: 15px;
     }
-    
+
     .countdown-message .heart-emoji {
         font-size: 13px;
     }
-    
+
     .account-detail-improved {
         padding: 18px;
     }
-    
+
     .account-info-row {
         gap: 8px;
     }
-    
+
     .name-with-icon {
         justify-content: center;
     }
-    
+
     .account-name {
         font-size: 15px;
     }
-    
+
     .bank-info {
         font-size: 13px;
         text-align: center;
     }
-    
+
     .copy-icon-btn {
         font-size: 14px;
         padding: 2px;
     }
-    
+
     .account-accordion-header {
         padding: 18px 20px;
     }
-    
+
     .account-accordion-header h4 {
         font-size: 16px;
     }
-    
+
     .account-accordion-content.expanded {
         padding: 0 20px 15px 20px;
     }
-    
+
     .account-person {
         padding: 12px 0;
     }
-    
+
     .account-label {
         font-size: 12px;
     }
-    
+
     .account-name {
         font-size: 14px;
     }
-    
+
     .account-number {
         font-size: 13px;
     }
-    
+
     .location-details-row {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .parents-cards {
         margin: 0 15px;
         gap: 15px;
     }
-    
+
     .parent-card {
         padding: 20px;
     }
-    
+
     .parent-badge {
         font-size: 11px;
         padding: 5px 14px;
     }
-    
+
     .parent-names {
         font-size: 15px;
     }
-    
+
     .child-info {
         font-size: 14px;
     }
-    
+
     .child-name {
         font-size: 18px;
     }
-    
+
     .navigation-links {
         margin: 20px 15px 25px;
         gap: 10px;
     }
-    
+
     .nav-link {
         padding: 12px 8px;
         gap: 5px;
     }
-    
+
     .nav-link i {
         font-size: 18px;
     }
-    
+
     .nav-link span {
         font-size: 11px;
     }
-    
+
     .transport-info-clean {
         margin: 0 15px 25px;
         gap: 20px;
     }
-    
+
     .transport-item-clean {
         padding: 20px;
     }
-    
+
     .transport-icon i {
         font-size: 24px;
     }
-    
+
     .transport-title {
         font-size: 16px;
         margin-bottom: 12px;
     }
-    
+
     .transport-desc {
         font-size: 13px;
     }
-    
+
     .transport-numbers {
         font-size: 12px;
     }
-    
+
     /* 갤러리 반응형 */
     .gallery-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 8px;
         margin: 0 15px;
     }
-    
+
     .gallery-subtitle {
         font-size: 12px;
     }
-    
+
     .gallery-title {
         font-size: 20px;
     }
-    
+
     .gallery-overlay i {
         font-size: 24px;
     }
-    
+
     .gallery-more-btn {
         padding: 10px 30px;
         font-size: 13px;
     }
-    
+
     .close-modal {
         top: 15px;
         right: 15px;
@@ -2014,58 +2031,60 @@ section {
         width: 40px;
         height: 40px;
     }
-    
+
     .modal-content-wrapper {
-        max-height: 60vh;
+        max-height: calc(100vh - 180px);
+        max-width: 95%;
     }
-    
+
     .modal-main-image {
-        max-height: 60vh;
+        max-height: calc(100vh - 180px);
+        border-radius: 8px;
     }
-    
+
     .pagination-dots {
-        bottom: 100px;
-        gap: 6px;
+        bottom: 80px;
+        gap: 5px;
     }
-    
+
     .pagination-dots .dot {
         width: 6px;
         height: 6px;
     }
-    
+
     .pagination-dots .dot.active {
-        width: 18px;
+        width: 16px;
     }
-    
+
     .modal-nav-btn {
         width: 40px;
         height: 40px;
         font-size: 20px;
     }
-    
+
     .modal-nav-btn.prev-btn {
-        left: 10px;
+        left: 5px;
     }
-    
+
     .modal-nav-btn.next-btn {
-        right: 10px;
+        right: 5px;
     }
-    
+
     .thumbnail-nav {
-        padding: 10px 0;
+        padding: 8px 0;
     }
-    
+
     .thumbnail-container {
-        gap: 8px;
-        padding: 0 15px;
+        gap: 6px;
+        padding: 0 10px;
     }
-    
+
     .thumbnail-item {
-        width: 60px;
-        height: 60px;
+        width: 55px;
+        height: 55px;
         border-width: 2px;
     }
-    
+
     /* 지도 반응형 */
     .map-container {
         height: 300px;
