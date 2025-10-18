@@ -38,14 +38,22 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://oapi.map.naver.com">
+    <link rel="dns-prefetch" href="https://t1.kakaocdn.net">
+    
     <!-- Preload critical image -->
+    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/couple-main.webp" type="image/webp" />
     <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/couple-main.jpg" />
     
     <!-- Font Awesome - 비동기 로딩 -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" /></noscript>
     
-    <!-- Google Fonts - 비동기 로딩 (실제 사용하는 폰트만) -->
+    <!-- Google Fonts - 비동기 로딩 (실제 사용하는 폰트만) + font-display:swap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
