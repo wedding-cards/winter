@@ -1,29 +1,72 @@
 import React, { useState, useEffect } from 'react';
 
 const MusicPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
     const audio = document.getElementById('backgroundMusic');
-    if (audio) {
-      audio.play().catch(e => {
-        console.log('자동 재생이 차단되었습니다. 사용자 상호작용 후 재생됩니다.');
-        setIsPlaying(false);
-      });
-    }
-  }, []);
+    
+    // 자동 재생 시도
+    const tryAutoPlay = () => {
+      if (audio) {
+        audio.play()
+          .then(() => {
+            setIsPlaying(true);
+            setShowPrompt(false);
+          })
+          .catch(e => {
+            console.log('자동 재생이 차단되었습니다. 사용자 클릭을 기다립니다.');
+            setIsPlaying(false);
+            setShowPrompt(true);
+          });
+      }
+    };
+
+    // 페이지 로드 시 자동 재생 시도
+    tryAutoPlay();
+
+    // 사용자의 첫 번째 클릭/터치 시 재생
+    const handleFirstInteraction = () => {
+      if (!isPlaying && audio) {
+        audio.play()
+          .then(() => {
+            setIsPlaying(true);
+            setShowPrompt(false);
+          })
+          .catch(e => console.log('재생 실패:', e));
+        
+        // 이벤트 리스너 제거
+        document.removeEventListener('click', handleFirstInteraction);
+        document.removeEventListener('touchstart', handleFirstInteraction);
+      }
+    };
+
+    document.addEventListener('click', handleFirstInteraction);
+    document.addEventListener('touchstart', handleFirstInteraction);
+
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('touchstart', handleFirstInteraction);
+    };
+  }, [isPlaying]);
 
   const toggleMusic = () => {
     const audio = document.getElementById('backgroundMusic');
     if (audio) {
       if (isPlaying) {
         audio.pause();
+        setIsPlaying(false);
       } else {
-        audio.play().catch(e => {
-          console.log('자동 재생이 차단되었습니다. 사용자 상호작용이 필요합니다.');
-        });
+        audio.play()
+          .then(() => {
+            setIsPlaying(true);
+            setShowPrompt(false);
+          })
+          .catch(e => {
+            console.log('재생 실패:', e);
+          });
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -34,8 +77,14 @@ const MusicPlayer = () => {
         Your browser does not support the audio element.
       </audio>
 
+      {showPrompt && (
+        <div className="music-prompt">
+          <p>🎵 배경음악이 준비되어 있습니다. 화면을 클릭하면 재생됩니다.</p>
+        </div>
+      )}
+
       <div className="music-control">
-        <button className="music-btn" onClick={toggleMusic}>
+        <button className="music-btn" onClick={toggleMusic} title={isPlaying ? '음악 끄기' : '음악 켜기'}>
           <i className={`fas ${isPlaying ? 'fa-volume-up' : 'fa-volume-mute'}`}></i>
         </button>
       </div>

@@ -254,6 +254,46 @@ body::after {
     box-shadow: 0 6px 20px rgba(107, 142, 159, 0.3);
 }
 
+/* 음악 재생 안내 프롬프트 */
+.music-prompt {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: rgba(107, 142, 159, 0.95);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    z-index: 99999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 5s forwards;
+    backdrop-filter: blur(10px);
+    max-width: 250px;
+}
+
+.music-prompt p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
 /* 메인 헤더 */
 .main-header {
     background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background) 100%);
