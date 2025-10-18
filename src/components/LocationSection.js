@@ -54,7 +54,6 @@ const LocationSection = () => {
   const handleNavigation = (type) => {
     const address = '서울 강남구 논현로79길 72 세인트 메리엘';
     const placeName = '세인트 메리엘';
-    const zipCode = '06239';
     
     let url = '';
     

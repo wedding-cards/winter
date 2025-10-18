@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import useScrollAnimation from '../hooks/useScrollAnimation';
 
 const GallerySection = () => {
@@ -30,20 +30,22 @@ const GallerySection = () => {
     document.body.style.overflow = 'hidden'; // 스크롤 방지
   };
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setModalOpen(false);
     document.body.style.overflow = 'unset';
-  };
+  }, []);
 
-  const changeImage = (direction) => {
-    let newIndex = currentImageIndex + direction;
-    if (newIndex >= galleryImages.length) {
-      newIndex = 0;
-    } else if (newIndex < 0) {
-      newIndex = galleryImages.length - 1;
-    }
-    setCurrentImageIndex(newIndex);
-  };
+  const changeImage = useCallback((direction) => {
+    setCurrentImageIndex(prevIndex => {
+      let newIndex = prevIndex + direction;
+      if (newIndex >= galleryImages.length) {
+        newIndex = 0;
+      } else if (newIndex < 0) {
+        newIndex = galleryImages.length - 1;
+      }
+      return newIndex;
+    });
+  }, [galleryImages.length]);
 
   const goToImage = (index) => {
     setCurrentImageIndex(index);
@@ -65,7 +67,7 @@ const GallerySection = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [modalOpen, currentImageIndex]);
+  }, [modalOpen, currentImageIndex, changeImage, closeModal]);
 
   // 터치 스와이프 (모바일)
   const minSwipeDistance = 50;

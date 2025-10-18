@@ -5,13 +5,15 @@ const useScrollAnimation = (options = {}) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const currentElement = elementRef.current;
+    
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
           // 한 번 나타나면 observer 해제 (재실행 방지)
-          if (elementRef.current) {
-            observer.unobserve(elementRef.current);
+          if (currentElement) {
+            observer.unobserve(currentElement);
           }
         }
       },
@@ -21,13 +23,13 @@ const useScrollAnimation = (options = {}) => {
       }
     );
 
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
     return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
+      if (currentElement) {
+        observer.unobserve(currentElement);
       }
     };
   }, [options.threshold, options.rootMargin]);
