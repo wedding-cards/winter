@@ -42,19 +42,28 @@ body::before {
     width: 100%;
     height: 200%;
     background-image:
-        radial-gradient(3px 3px at 10% 20%, white, transparent),
-        radial-gradient(2px 2px at 40% 60%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 80% 10%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(3px 3px at 20% 80%, white, transparent),
-        radial-gradient(2px 2px at 90% 40%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 60% 90%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(3px 3px at 30% 30%, white, transparent),
-        radial-gradient(2px 2px at 70% 70%, rgba(255, 255, 255, 0.9), transparent);
+        radial-gradient(5px 5px at 10% 20%, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(4px 4px at 40% 60%, rgba(255, 255, 255, 0.95), transparent),
+        radial-gradient(4px 4px at 80% 10%, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(5px 5px at 20% 80%, rgba(255, 255, 255, 0.95), transparent),
+        radial-gradient(4px 4px at 90% 40%, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(4px 4px at 60% 90%, rgba(255, 255, 255, 0.95), transparent),
+        radial-gradient(5px 5px at 30% 30%, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(4px 4px at 70% 70%, rgba(255, 255, 255, 0.95), transparent),
+        radial-gradient(6px 6px at 50% 45%, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(5px 5px at 15% 55%, rgba(255, 255, 255, 0.9), transparent);
     background-size: 100% 100%;
     pointer-events: none;
-    z-index: 99999;
-    opacity: 0.6;
+    z-index: 1000003;
+    opacity: 0;
     animation: snowfall 20s linear infinite;
+    transition: opacity 0.5s ease;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
+}
+
+/* 갤러리 모달이 열렸을 때 눈 표시 */
+body[style*="overflow: hidden"]::before {
+    opacity: 0.85;
 }
 
 /* 눈 내리는 애니메이션 - 레이어 2 (작은 눈) */
@@ -66,21 +75,30 @@ body::after {
     width: 100%;
     height: 200%;
     background-image:
-        radial-gradient(1px 1px at 15% 30%, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.5), transparent),
-        radial-gradient(1px 1px at 85% 20%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(1px 1px at 25% 70%, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 65% 85%, rgba(255, 255, 255, 0.5), transparent),
-        radial-gradient(1px 1px at 45% 15%, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 75% 45%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(1px 1px at 35% 65%, rgba(255, 255, 255, 0.5), transparent),
-        radial-gradient(1px 1px at 55% 35%, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 95% 75%, rgba(255, 255, 255, 0.5), transparent);
+        radial-gradient(3px 3px at 15% 30%, rgba(255, 255, 255, 0.85), transparent),
+        radial-gradient(2px 2px at 50% 50%, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(3px 3px at 85% 20%, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(2px 2px at 25% 70%, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 65% 85%, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(3px 3px at 45% 15%, rgba(255, 255, 255, 0.85), transparent),
+        radial-gradient(2px 2px at 75% 45%, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(3px 3px at 35% 65%, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 55% 35%, rgba(255, 255, 255, 0.85), transparent),
+        radial-gradient(3px 3px at 95% 75%, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 5% 50%, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(3px 3px at 88% 60%, rgba(255, 255, 255, 0.9), transparent);
     background-size: 100% 100%;
     pointer-events: none;
-    z-index: 99998;
-    opacity: 0.4;
+    z-index: 1000003;
+    opacity: 0;
     animation: snowfall 30s linear infinite;
+    transition: opacity 0.5s ease;
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.6));
+}
+
+/* 갤러리 모달이 열렸을 때 눈 표시 */
+body[style*="overflow: hidden"]::after {
+    opacity: 0.7;
 }
 
 @keyframes snowfall {
@@ -100,8 +118,15 @@ body::after {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 99997;
+    z-index: 1000003;
     overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* 갤러리 모달이 열렸을 때 눈송이 컨테이너 표시 */
+body[style*="overflow: hidden"] .snow-container {
+    opacity: 1;
 }
 
 .snow-layer {
@@ -116,49 +141,52 @@ body::after {
 /* 눈송이 레이어 1 - 중간 크기 */
 .snow-layer-1 {
     background-image:
-        radial-gradient(2px 2px at 5% 10%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 35% 25%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 65% 40%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(2px 2px at 85% 15%, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(2px 2px at 15% 55%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 45% 70%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 75% 85%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(2px 2px at 95% 60%, rgba(255, 255, 255, 0.6), transparent);
+        radial-gradient(4px 4px at 5% 10%, rgba(255, 255, 255, 0.95), transparent),
+        radial-gradient(3px 3px at 35% 25%, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(4px 4px at 65% 40%, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(3px 3px at 85% 15%, rgba(255, 255, 255, 0.85), transparent),
+        radial-gradient(4px 4px at 15% 55%, rgba(255, 255, 255, 0.95), transparent),
+        radial-gradient(3px 3px at 45% 70%, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(4px 4px at 75% 85%, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(3px 3px at 95% 60%, rgba(255, 255, 255, 0.85), transparent);
     background-size: 100% 100%;
-    opacity: 0.5;
+    opacity: 0.7;
     animation: snowfall 25s linear infinite;
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.5));
 }
 
 /* 눈송이 레이어 2 - 느린 큰 눈 */
 .snow-layer-2 {
     background-image:
-        radial-gradient(3px 3px at 12% 18%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(3px 3px at 48% 35%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(3px 3px at 78% 52%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(3px 3px at 22% 68%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(3px 3px at 58% 82%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(3px 3px at 88% 28%, rgba(255, 255, 255, 0.8), transparent);
+        radial-gradient(5px 5px at 12% 18%, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(4px 4px at 48% 35%, rgba(255, 255, 255, 0.95), transparent),
+        radial-gradient(5px 5px at 78% 52%, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(4px 4px at 22% 68%, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(5px 5px at 58% 82%, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(4px 4px at 88% 28%, rgba(255, 255, 255, 0.95), transparent);
     background-size: 100% 100%;
-    opacity: 0.6;
+    opacity: 0.8;
     animation: snowfall 35s linear infinite;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
 }
 
 /* 눈송이 레이어 3 - 빠른 작은 눈 */
 .snow-layer-3 {
     background-image:
-        radial-gradient(1px 1px at 8% 12%, rgba(255, 255, 255, 0.5), transparent),
-        radial-gradient(1px 1px at 28% 28%, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 52% 42%, rgba(255, 255, 255, 0.4), transparent),
-        radial-gradient(1px 1px at 72% 18%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(1px 1px at 18% 62%, rgba(255, 255, 255, 0.5), transparent),
-        radial-gradient(1px 1px at 42% 78%, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 68% 88%, rgba(255, 255, 255, 0.4), transparent),
-        radial-gradient(1px 1px at 92% 48%, rgba(255, 255, 255, 0.5), transparent),
-        radial-gradient(1px 1px at 38% 8%, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 82% 72%, rgba(255, 255, 255, 0.5), transparent);
+        radial-gradient(2px 2px at 8% 12%, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(2px 2px at 28% 28%, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 52% 42%, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 72% 18%, rgba(255, 255, 255, 0.85), transparent),
+        radial-gradient(2px 2px at 18% 62%, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(2px 2px at 42% 78%, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 68% 88%, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 92% 48%, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(2px 2px at 38% 8%, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 82% 72%, rgba(255, 255, 255, 0.75), transparent);
     background-size: 100% 100%;
-    opacity: 0.3;
+    opacity: 0.6;
     animation: snowfall 15s linear infinite;
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4));
 }
 
 /* 스크롤 애니메이션 */
