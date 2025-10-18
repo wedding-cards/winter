@@ -20,7 +20,7 @@ const MusicPlayer = () => {
   return (
     <>
       <audio id="backgroundMusic" loop>
-        <source src="/assets/audio/maktub-start.mp3" type="audio/mpeg" />
+        <source src="/assets/audio/flower.mp3" type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
 
