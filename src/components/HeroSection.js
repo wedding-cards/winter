@@ -1,17 +1,10 @@
-import React from 'react';
-import useScrollAnimation from '../hooks/useScrollAnimation';
+import React from "react";
 
 const HeroSection = () => {
-  const [heroRef, heroVisible] = useScrollAnimation({ threshold: 0.2 });
-  const [imageRef, imageVisible] = useScrollAnimation({ threshold: 0.3 });
-
   return (
     <header className="main-header">
       <div className="hero-section">
-        <div 
-          ref={heroRef}
-          className={`hero-content animate-fade ${heroVisible ? 'visible' : ''}`}
-        >
+        <div className="hero-content">
           <div className="wedding-date">2025년 12월 13일 토요일</div>
           <div className="couple-names">
             <span className="groom-name">민석</span>
@@ -21,18 +14,15 @@ const HeroSection = () => {
           <div className="wedding-time">오후 3시</div>
           <div className="wedding-venue">세인트 메리엘</div>
         </div>
-        <div 
-          ref={imageRef}
-          className={`hero-image animate-scale ${imageVisible ? 'visible' : ''}`}
-        >
+        <div className="hero-image">
           <picture>
-            <source 
-              type="image/webp" 
-              srcSet="/assets/images/couple-main.webp" 
+            <source
+              type="image/webp"
+              srcSet="/assets/images/couple-main.webp"
             />
-            <img 
-              src="/assets/images/couple-main.jpg" 
-              alt="신랑 민석과 신부 수진의 웨딩 사진 - 행복한 미소를 짓고 있는 두 사람" 
+            <img
+              src="/assets/images/couple-main.jpg"
+              alt="신랑 민석과 신부 수진의 웨딩 사진 - 행복한 미소를 짓고 있는 두 사람"
               id="mainPhoto"
               width="280"
               height="350"

@@ -1,64 +1,80 @@
-import React, { useState } from 'react';
-import useScrollAnimation from '../hooks/useScrollAnimation';
+import React, { useState } from "react";
+import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const AccountSection = () => {
   const [sectionRef, sectionVisible] = useScrollAnimation({ threshold: 0.2 });
   const [groomExpanded, setGroomExpanded] = useState(false);
   const [brideExpanded, setBrideExpanded] = useState(false);
-  
+
   const copyAccount = (accountNumber) => {
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(accountNumber).then(() => {
-        alert('계좌번호가 복사되었습니다.');
-      }).catch(() => {
-        fallbackCopyAccount(accountNumber);
-      });
+      navigator.clipboard
+        .writeText(accountNumber)
+        .then(() => {
+          alert("계좌번호가 복사되었습니다.");
+        })
+        .catch(() => {
+          fallbackCopyAccount(accountNumber);
+        });
     } else {
       fallbackCopyAccount(accountNumber);
     }
   };
 
   const fallbackCopyAccount = (accountNumber) => {
-    const textArea = document.createElement('textarea');
+    const textArea = document.createElement("textarea");
     textArea.value = accountNumber;
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    
+
     try {
-      document.execCommand('copy');
-      alert('계좌번호가 복사되었습니다.');
+      document.execCommand("copy");
+      alert("계좌번호가 복사되었습니다.");
     } catch (err) {
-      alert('복사에 실패했습니다. 수동으로 복사해주세요.');
+      alert("복사에 실패했습니다. 수동으로 복사해주세요.");
     }
-    
+
     document.body.removeChild(textArea);
   };
 
   return (
     <section className="account-section">
       <div className="container">
-        <h2 className="section-title">ACCOUNT</h2>
+        <p className="section-subtitle">ACCOUNT</p>
+        <h2 className="section-title">마음 전하실 곳</h2>
         <p className="account-description">
-          참석이 어려워 직접 축하를 전하지 못하는<br/>
-          분들을 위해 계좌번호를 기재하였습니다.<br/>
+          참석이 어려워 직접 축하를 전하지 못하는
+          <br />
+          분들을 위해 계좌번호를 기재하였습니다.
+          <br />
           전해주시는 마음 감사히 받겠습니다.
         </p>
-        
-        <div 
+
+        <div
           ref={sectionRef}
-          className={`account-info-improved animate-on-scroll ${sectionVisible ? 'visible' : ''}`}
+          className={`account-info-improved animate-on-scroll ${
+            sectionVisible ? "visible" : ""
+          }`}
         >
           {/* 신랑측 계좌 */}
           <div className="account-accordion">
-            <div 
+            <div
               className="account-accordion-header"
               onClick={() => setGroomExpanded(!groomExpanded)}
             >
               <h4>신랑측</h4>
-              <i className={`fas fa-chevron-${groomExpanded ? 'up' : 'down'} accordion-icon`}></i>
+              <i
+                className={`fas fa-chevron-${
+                  groomExpanded ? "up" : "down"
+                } accordion-icon`}
+              ></i>
             </div>
-            <div className={`account-accordion-content ${groomExpanded ? 'expanded' : ''}`}>
+            <div
+              className={`account-accordion-content ${
+                groomExpanded ? "expanded" : ""
+              }`}
+            >
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">신랑</span>
@@ -66,11 +82,11 @@ const AccountSection = () => {
                 </div>
                 <div className="account-row">
                   <span className="account-number">우리 1234567890</span>
-                  <button 
-                    className="copy-icon-btn" 
+                  <button
+                    className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount('1234567890');
+                      copyAccount("1234567890");
                     }}
                     title="계좌번호 복사"
                   >
@@ -78,7 +94,7 @@ const AccountSection = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">아버지</span>
@@ -86,11 +102,11 @@ const AccountSection = () => {
                 </div>
                 <div className="account-row">
                   <span className="account-number">국민 22292000222</span>
-                  <button 
-                    className="copy-icon-btn" 
+                  <button
+                    className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount('22292000222');
+                      copyAccount("22292000222");
                     }}
                     title="계좌번호 복사"
                   >
@@ -98,7 +114,7 @@ const AccountSection = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">어머니</span>
@@ -106,11 +122,11 @@ const AccountSection = () => {
                 </div>
                 <div className="account-row">
                   <span className="account-number">기업 30303029222</span>
-                  <button 
-                    className="copy-icon-btn" 
+                  <button
+                    className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount('30303029222');
+                      copyAccount("30303029222");
                     }}
                     title="계좌번호 복사"
                   >
@@ -123,14 +139,22 @@ const AccountSection = () => {
 
           {/* 신부측 계좌 */}
           <div className="account-accordion">
-            <div 
+            <div
               className="account-accordion-header"
               onClick={() => setBrideExpanded(!brideExpanded)}
             >
               <h4>신부측</h4>
-              <i className={`fas fa-chevron-${brideExpanded ? 'up' : 'down'} accordion-icon`}></i>
+              <i
+                className={`fas fa-chevron-${
+                  brideExpanded ? "up" : "down"
+                } accordion-icon`}
+              ></i>
             </div>
-            <div className={`account-accordion-content ${brideExpanded ? 'expanded' : ''}`}>
+            <div
+              className={`account-accordion-content ${
+                brideExpanded ? "expanded" : ""
+              }`}
+            >
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">신부</span>
@@ -138,11 +162,11 @@ const AccountSection = () => {
                 </div>
                 <div className="account-row">
                   <span className="account-number">카카오 3333031697843</span>
-                  <button 
-                    className="copy-icon-btn" 
+                  <button
+                    className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount('3333031697843');
+                      copyAccount("3333031697843");
                     }}
                     title="계좌번호 복사"
                   >
@@ -150,7 +174,7 @@ const AccountSection = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">아버지</span>
@@ -158,11 +182,11 @@ const AccountSection = () => {
                 </div>
                 <div className="account-row">
                   <span className="account-number">신한 998877665544</span>
-                  <button 
-                    className="copy-icon-btn" 
+                  <button
+                    className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount('998877665544');
+                      copyAccount("998877665544");
                     }}
                     title="계좌번호 복사"
                   >
@@ -170,7 +194,7 @@ const AccountSection = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">어머니</span>
@@ -178,11 +202,11 @@ const AccountSection = () => {
                 </div>
                 <div className="account-row">
                   <span className="account-number">농협 1029384756</span>
-                  <button 
-                    className="copy-icon-btn" 
+                  <button
+                    className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount('1029384756');
+                      copyAccount("1029384756");
                     }}
                     title="계좌번호 복사"
                   >

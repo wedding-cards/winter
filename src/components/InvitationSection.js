@@ -1,5 +1,5 @@
-import React from 'react';
-import useScrollAnimation from '../hooks/useScrollAnimation';
+import React from "react";
+import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const InvitationSection = () => {
   const [sectionRef, sectionVisible] = useScrollAnimation({ threshold: 0.2 });
@@ -7,10 +7,13 @@ const InvitationSection = () => {
   return (
     <section className="invitation-section">
       <div className="container">
-        <h2 className="section-title">INVITATION</h2>
-        <div 
+        <p className="section-subtitle">INVITATION</p>
+        <h2 className="section-title">초대합니다</h2>
+        <div
           ref={sectionRef}
-          className={`invitation-text animate-on-scroll ${sectionVisible ? 'visible' : ''}`}
+          className={`invitation-text animate-on-scroll ${
+            sectionVisible ? "visible" : ""
+          }`}
         >
           <p>서로가 마주 보며 다져온 사랑을</p>
           <p>이제 함께 한 곳을 바라보며 걸어갈 수 있는</p>
@@ -20,7 +23,7 @@ const InvitationSection = () => {
           <p>지켜나갈 수 있게</p>
           <p>앞날을 축복해 주시면 감사하겠습니다.</p>
         </div>
-        
+
         <div className="parents-cards">
           {/* 신랑측 카드 */}
           <div className="parent-card">

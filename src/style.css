@@ -1,19 +1,19 @@
-/* 기본 스타일 및 색상 팔레트 - 따뜻한 겨울 로맨스 테마 */
+/* 기본 스타일 및 색상 팔레트 - 사랑스러운 웨딩 테마 */
 :root {
-    --primary-color: #6B8E9F;        /* 부드러운 겨울 블루 */
-    --secondary-color: #F5F9FB;      /* 눈처럼 순백의 블루 틴트 */
-    --accent-color: #4A6B7C;         /* 깊은 겨울 블루 */
-    --rose-gold: #D4A5A5;            /* 로즈 골드 (따뜻한 포인트) */
-    --warm-rose: #d08c95;            /* 따뜻한 로즈 핑크 */
-    --text-primary: #2F4858;         /* 겨울 네이비 */
-    --text-secondary: #607D8B;       /* 겨울 그레이 블루 */
-    --text-light: #90A4AE;           /* 연한 겨울 그레이 */
-    --background: #FDFEFF;           /* 눈 화이트 (미세한 블루) */
-    --background-secondary: #F0F7FA; /* 겨울 하늘 배경 */
+    --primary-color: #D4A5A5;        /* 로즈 핑크 */
+    --secondary-color: #FFFFFF;      /* 순백 */
+    --accent-color: #C89DA1;         /* 부드러운 핑크 */
+    --rose-gold: #E8B4B8;            /* 밝은 로즈 골드 */
+    --warm-rose: #F5D4D8;            /* 연한 핑크 */
+    --text-primary: #4A4A4A;         /* 부드러운 그레이 */
+    --text-secondary: #7A7A7A;       /* 중간 그레이 */
+    --text-light: #B0B0B0;           /* 연한 그레이 */
+    --background: #FFFFFF;           /* 순백 */
+    --background-secondary: #FFFFFF; /* 순백 */
     --pure-white: #ffffff;
-    --shadow: rgba(107, 142, 159, 0.15);
-    --light-shadow: rgba(107, 142, 159, 0.08);
-    --snow-white: #F8FBFD;
+    --shadow: rgba(212, 165, 165, 0.15);
+    --light-shadow: rgba(212, 165, 165, 0.08);
+    --snow-white: #FFFFFF;
 }
 
 /* 전체 리셋 및 기본 설정 */
@@ -24,81 +24,13 @@
 }
 
 body {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Nanum Myeongjo', 'Noto Sans KR', serif;
     line-height: 1.6;
     color: var(--text-primary);
-    background: linear-gradient(180deg, #FDFEFF 0%, #F5F9FB 100%);
+    background: #FFFFFF;
     background-attachment: fixed;
     overflow-x: hidden;
     position: relative;
-}
-
-/* 눈 내리는 애니메이션 - 레이어 1 (큰 눈) */
-body::before {
-    content: '';
-    position: fixed;
-    top: -100%;
-    left: 0;
-    width: 100%;
-    height: 200%;
-    background-image:
-        radial-gradient(5px 5px at 10% 20%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(4px 4px at 40% 60%, rgba(255, 255, 255, 0.95), transparent),
-        radial-gradient(4px 4px at 80% 10%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(5px 5px at 20% 80%, rgba(255, 255, 255, 0.95), transparent),
-        radial-gradient(4px 4px at 90% 40%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(4px 4px at 60% 90%, rgba(255, 255, 255, 0.95), transparent),
-        radial-gradient(5px 5px at 30% 30%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(4px 4px at 70% 70%, rgba(255, 255, 255, 0.95), transparent),
-        radial-gradient(6px 6px at 50% 45%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(5px 5px at 15% 55%, rgba(255, 255, 255, 0.9), transparent);
-    background-size: 100% 100%;
-    pointer-events: none;
-    z-index: 1000003;
-    opacity: 0;
-    animation: snowfall 20s linear infinite;
-    transition: opacity 0.5s ease;
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
-}
-
-/* 갤러리 모달이 열렸을 때 눈 표시 */
-body[style*="overflow: hidden"]::before {
-    opacity: 0.85;
-}
-
-/* 눈 내리는 애니메이션 - 레이어 2 (작은 눈) */
-body::after {
-    content: '';
-    position: fixed;
-    top: -100%;
-    left: 0;
-    width: 100%;
-    height: 200%;
-    background-image:
-        radial-gradient(3px 3px at 15% 30%, rgba(255, 255, 255, 0.85), transparent),
-        radial-gradient(2px 2px at 50% 50%, rgba(255, 255, 255, 0.75), transparent),
-        radial-gradient(3px 3px at 85% 20%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(2px 2px at 25% 70%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 65% 85%, rgba(255, 255, 255, 0.75), transparent),
-        radial-gradient(3px 3px at 45% 15%, rgba(255, 255, 255, 0.85), transparent),
-        radial-gradient(2px 2px at 75% 45%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(3px 3px at 35% 65%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 55% 35%, rgba(255, 255, 255, 0.85), transparent),
-        radial-gradient(3px 3px at 95% 75%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 5% 50%, rgba(255, 255, 255, 0.75), transparent),
-        radial-gradient(3px 3px at 88% 60%, rgba(255, 255, 255, 0.9), transparent);
-    background-size: 100% 100%;
-    pointer-events: none;
-    z-index: 1000003;
-    opacity: 0;
-    animation: snowfall 30s linear infinite;
-    transition: opacity 0.5s ease;
-    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.6));
-}
-
-/* 갤러리 모달이 열렸을 때 눈 표시 */
-body[style*="overflow: hidden"]::after {
-    opacity: 0.7;
 }
 
 @keyframes snowfall {
@@ -110,84 +42,7 @@ body[style*="overflow: hidden"]::after {
     }
 }
 
-/* 추가 눈송이 레이어 컨테이너 */
-.snow-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1000003;
-    overflow: hidden;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
 
-/* 갤러리 모달이 열렸을 때 눈송이 컨테이너 표시 */
-body[style*="overflow: hidden"] .snow-container {
-    opacity: 1;
-}
-
-.snow-layer {
-    position: absolute;
-    top: -100%;
-    left: 0;
-    width: 100%;
-    height: 200%;
-    pointer-events: none;
-}
-
-/* 눈송이 레이어 1 - 중간 크기 */
-.snow-layer-1 {
-    background-image:
-        radial-gradient(4px 4px at 5% 10%, rgba(255, 255, 255, 0.95), transparent),
-        radial-gradient(3px 3px at 35% 25%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(4px 4px at 65% 40%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(3px 3px at 85% 15%, rgba(255, 255, 255, 0.85), transparent),
-        radial-gradient(4px 4px at 15% 55%, rgba(255, 255, 255, 0.95), transparent),
-        radial-gradient(3px 3px at 45% 70%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(4px 4px at 75% 85%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(3px 3px at 95% 60%, rgba(255, 255, 255, 0.85), transparent);
-    background-size: 100% 100%;
-    opacity: 0.7;
-    animation: snowfall 25s linear infinite;
-    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.5));
-}
-
-/* 눈송이 레이어 2 - 느린 큰 눈 */
-.snow-layer-2 {
-    background-image:
-        radial-gradient(5px 5px at 12% 18%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(4px 4px at 48% 35%, rgba(255, 255, 255, 0.95), transparent),
-        radial-gradient(5px 5px at 78% 52%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(4px 4px at 22% 68%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(5px 5px at 58% 82%, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(4px 4px at 88% 28%, rgba(255, 255, 255, 0.95), transparent);
-    background-size: 100% 100%;
-    opacity: 0.8;
-    animation: snowfall 35s linear infinite;
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
-}
-
-/* 눈송이 레이어 3 - 빠른 작은 눈 */
-.snow-layer-3 {
-    background-image:
-        radial-gradient(2px 2px at 8% 12%, rgba(255, 255, 255, 0.75), transparent),
-        radial-gradient(2px 2px at 28% 28%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 52% 42%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 72% 18%, rgba(255, 255, 255, 0.85), transparent),
-        radial-gradient(2px 2px at 18% 62%, rgba(255, 255, 255, 0.75), transparent),
-        radial-gradient(2px 2px at 42% 78%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 68% 88%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 92% 48%, rgba(255, 255, 255, 0.75), transparent),
-        radial-gradient(2px 2px at 38% 8%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 82% 72%, rgba(255, 255, 255, 0.75), transparent);
-    background-size: 100% 100%;
-    opacity: 0.6;
-    animation: snowfall 15s linear infinite;
-    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4));
-}
 
 /* 스크롤 애니메이션 */
 @keyframes fadeInUp {
@@ -338,51 +193,11 @@ body[style*="overflow: hidden"] section {
 
 /* 메인 헤더 */
 .main-header {
-    background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background) 100%);
+    background: #FFFFFF;
     padding: 60px 0 40px;
     text-align: center;
     position: relative;
     overflow: hidden;
-}
-
-.main-header::before {
-    content: '❄️';
-    position: absolute;
-    top: 30px;
-    left: 10%;
-    font-size: 30px;
-    opacity: 0.2;
-    animation: snowFloat 6s ease-in-out infinite;
-}
-
-.main-header::after {
-    content: '❄️';
-    position: absolute;
-    bottom: 30px;
-    right: 10%;
-    font-size: 25px;
-    opacity: 0.2;
-    animation: snowFloat 8s ease-in-out infinite reverse;
-}
-
-@keyframes snowFloat {
-    0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-15px) rotate(180deg);
-    }
-}
-
-.main-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="petals" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%238B1538" opacity="0.08"/></pattern></defs><rect width="100" height="100" fill="url(%23petals)"/></svg>');
-    opacity: 0.5;
 }
 
 .hero-content {
@@ -443,8 +258,7 @@ body[style*="overflow: hidden"] section {
     height: 350px;
     border-radius: 20px;
     object-fit: cover;
-    box-shadow: 0 15px 40px var(--light-shadow);
-    border: 5px solid var(--pure-white);
+    box-shadow: 0 8px 25px var(--light-shadow);
 }
 
 /* 섹션 공통 스타일 */
@@ -453,14 +267,25 @@ section {
 }
 
 .section-title {
-    font-family: 'Playfair Display', 'Nanum Myeongjo', serif;
-    font-size: 32px;
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 24px;
     text-align: center;
     color: var(--primary-color);
-    margin-bottom: 40px;
-    font-weight: 700;
-    letter-spacing: 3px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
     position: relative;
+}
+
+.section-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    text-align: center;
+    color: var(--text-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    font-weight: 400;
 }
 
 .section-title::after {
@@ -500,37 +325,42 @@ section {
 .parent-card {
     background: var(--pure-white);
     border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 8px 25px var(--light-shadow);
-    border: 1px solid var(--secondary-color);
+    padding: 20px;
+    box-shadow: 0 4px 15px var(--light-shadow);
+    border: 1px solid #F5E6E8;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .parent-badge {
     display: inline-block;
-    padding: 6px 16px;
+    padding: 5px 14px;
     border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 600;
     letter-spacing: 1px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .groom-badge {
-    background: linear-gradient(135deg, var(--primary-color), var(--violet-accent));
+    background: var(--primary-color);
     color: white;
 }
 
 .bride-badge {
-    background: linear-gradient(135deg, var(--violet-accent), var(--primary-color));
+    background: var(--accent-color);
     color: white;
 }
 
 .parent-content {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     text-align: center;
+    align-items: center;
 }
 
 .parent-names {
@@ -538,7 +368,7 @@ section {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .parent-name {
@@ -555,7 +385,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     font-size: 15px;
 }
 
@@ -566,7 +396,7 @@ section {
 
 .child-name {
     color: var(--primary-color);
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 700;
 }
 
@@ -623,17 +453,17 @@ section {
     color: white;
     font-weight: 700;
     transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(107, 142, 159, 0.4), 0 0 20px rgba(212, 165, 165, 0.3);
+    box-shadow: 0 4px 15px rgba(212, 165, 165, 0.4), 0 0 20px rgba(232, 180, 184, 0.5);
     position: relative;
 }
 
 .calendar-day.wedding-day::after {
-    content: '❄️';
+    content: '💕';
     position: absolute;
     top: 2px;
     right: 4px;
     font-size: 10px;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 /* 카운트다운 */
@@ -789,7 +619,7 @@ section {
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(248, 248, 248, 0.99);
+    background: rgba(255, 255, 255, 0.98);
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -1614,32 +1444,32 @@ section {
 
 /* 깔끔한 카운트다운 스타일 - 한 줄 배치 */
 .countdown-clean {
-    background: linear-gradient(135deg, var(--pure-white) 0%, var(--snow-white) 100%);
+    background: #FFFFFF;
     border-radius: 15px;
     padding: 35px 25px;
     margin: 0 20px;
-    box-shadow: 0 8px 25px var(--light-shadow), 0 0 15px rgba(107, 142, 159, 0.1);
-    border: 1px solid var(--secondary-color);
+    box-shadow: 0 8px 25px var(--light-shadow), 0 0 15px rgba(212, 165, 165, 0.1);
+    border: 1px solid #F5E6E8;
     position: relative;
     overflow: hidden;
 }
 
 .countdown-clean::before {
-    content: '❄️';
+    content: '💕';
     position: absolute;
     top: 10px;
     right: 15px;
     font-size: 20px;
-    opacity: 0.3;
+    opacity: 0.4;
 }
 
 .countdown-clean::after {
-    content: '❄️';
+    content: '💕';
     position: absolute;
     bottom: 10px;
     left: 15px;
     font-size: 16px;
-    opacity: 0.3;
+    opacity: 0.4;
 }
 
 .countdown-single-row {

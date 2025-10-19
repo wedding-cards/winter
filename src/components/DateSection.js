@@ -1,29 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import useScrollAnimation from '../hooks/useScrollAnimation';
+import React, { useState, useEffect } from "react";
+import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const DateSection = () => {
   const [calendarRef, calendarVisible] = useScrollAnimation({ threshold: 0.2 });
-  const [countdownRef, countdownVisible] = useScrollAnimation({ threshold: 0.2 });
-  
+  const [countdownRef, countdownVisible] = useScrollAnimation({
+    threshold: 0.2,
+  });
+
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
-    isPast: false
+    isPast: false,
   });
 
   useEffect(() => {
     // 결혼식 날짜 설정 (2025년 12월 13일 15:00)
-    const weddingDate = new Date('2025-12-13T15:00:00').getTime();
-    
+    const weddingDate = new Date("2025-12-13T15:00:00").getTime();
+
     const updateCountdown = () => {
       const now = new Date().getTime();
       const distance = weddingDate - now;
 
       if (distance > 0) {
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -32,8 +36,12 @@ const DateSection = () => {
         // 결혼식이 지난 경우
         const pastDistance = Math.abs(distance);
         const days = Math.floor(pastDistance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((pastDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((pastDistance % (1000 * 60 * 60)) / (1000 * 60));
+        const hours = Math.floor(
+          (pastDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor(
+          (pastDistance % (1000 * 60 * 60)) / (1000 * 60)
+        );
         const seconds = Math.floor((pastDistance % (1000 * 60)) / 1000);
 
         setTimeLeft({ days, hours, minutes, seconds, isPast: true });
@@ -49,12 +57,15 @@ const DateSection = () => {
   return (
     <section className="date-section">
       <div className="container">
-        <h2 className="section-title">DATE & TIME</h2>
-        
+        <p className="section-subtitle">DATE & TIME</p>
+        <h2 className="section-title">날짜와 시간</h2>
+
         {/* 캘린더 */}
-        <div 
+        <div
           ref={calendarRef}
-          className={`calendar animate-on-scroll ${calendarVisible ? 'visible' : ''}`}
+          className={`calendar animate-on-scroll ${
+            calendarVisible ? "visible" : ""
+          }`}
         >
           <div className="calendar-header">
             <h3>2025년 12월</h3>
@@ -104,33 +115,44 @@ const DateSection = () => {
         </div>
 
         {/* 깔끔한 카운트다운 - 한 줄 배치 */}
-        <div 
+        <div
           ref={countdownRef}
-          className={`countdown-clean animate-scale ${countdownVisible ? 'visible' : ''}`}
+          className={`countdown-clean animate-scale ${
+            countdownVisible ? "visible" : ""
+          }`}
         >
           <div className="countdown-single-row">
             <div className="countdown-group">
               <span className="countdown-label-inline">DAYS</span>
-              <span className="countdown-number-inline">{String(timeLeft.days).padStart(2, '0')}</span>
+              <span className="countdown-number-inline">
+                {String(timeLeft.days).padStart(2, "0")}
+              </span>
             </div>
             <span className="countdown-colon">:</span>
             <div className="countdown-group">
               <span className="countdown-label-inline">HOUR</span>
-              <span className="countdown-number-inline">{String(timeLeft.hours).padStart(2, '0')}</span>
+              <span className="countdown-number-inline">
+                {String(timeLeft.hours).padStart(2, "0")}
+              </span>
             </div>
             <span className="countdown-colon">:</span>
             <div className="countdown-group">
               <span className="countdown-label-inline">MIN</span>
-              <span className="countdown-number-inline">{String(timeLeft.minutes).padStart(2, '0')}</span>
+              <span className="countdown-number-inline">
+                {String(timeLeft.minutes).padStart(2, "0")}
+              </span>
             </div>
             <span className="countdown-colon">:</span>
             <div className="countdown-group">
               <span className="countdown-label-inline">SEC</span>
-              <span className="countdown-number-inline">{String(timeLeft.seconds).padStart(2, '0')}</span>
+              <span className="countdown-number-inline">
+                {String(timeLeft.seconds).padStart(2, "0")}
+              </span>
             </div>
           </div>
           <p className="countdown-message">
-            민석 <span className="heart-emoji">♥</span> 수진 결혼식이 {timeLeft.days}일 {timeLeft.isPast ? '지났습니다' : '남았습니다'}.
+            민석 <span className="heart-emoji">♥</span> 수진 결혼식이{" "}
+            {timeLeft.days}일 {timeLeft.isPast ? "지났습니다" : "남았습니다"}.
           </p>
         </div>
       </div>
