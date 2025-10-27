@@ -16,7 +16,7 @@ const ShareSection = () => {
         content: {
           title: shareTitle,
           description: shareDescription,
-          imageUrl: `${window.location.origin}/og-image.jpg`,
+          imageUrl: `${window.location.origin}/og-image-kakao.jpg`,
           link: {
             mobileWebUrl: shareUrl,
             webUrl: shareUrl,
