@@ -1,5 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import useScrollAnimation from "../hooks/useScrollAnimation";
+
+// 고유한 ID 생성 함수
+const generateUniqueId = () => {
+  return Date.now() + Math.random().toString(36).substr(2, 9);
+};
+
+// ID 중복 확인 및 수정 함수
+const ensureUniqueIds = (messages) => {
+  const seenIds = new Set();
+  return messages.map((msg) => {
+    if (seenIds.has(msg.id) || !msg.id) {
+      msg.id = generateUniqueId();
+    }
+    seenIds.add(msg.id);
+    return msg;
+  });
+};
+
+// 샘플 방명록 메시지
+const SAMPLE_MESSAGES = [
+  {
+    name: "최원정",
+    message: "너무 아름다운 커플이에요~ 평생 행복하세요! 🎉",
+    date: "2025-10-14",
+    id: generateUniqueId(),
+  },
+  {
+    name: "임경민",
+    message: "민석아 결혼 축하한다! 행복한 가정 만들어 나가길 응원할게 👏",
+    date: "2025-10-17",
+    id: generateUniqueId(),
+  },
+];
 
 const GuestbookSection = () => {
   const [sectionRef, sectionVisible] = useScrollAnimation({ threshold: 0.2 });
@@ -11,24 +44,6 @@ const GuestbookSection = () => {
   });
 
   useEffect(() => {
-    // 고유한 ID 생성 함수
-    const generateUniqueId = () => {
-      return Date.now() + Math.random().toString(36).substr(2, 9);
-    };
-
-    // ID 중복 확인 및 수정 함수
-    const ensureUniqueIds = (messages) => {
-      const seenIds = new Set();
-      return messages.map((msg) => {
-        if (seenIds.has(msg.id) || !msg.id) {
-          // 중복되거나 없는 ID를 새로운 고유 ID로 교체
-          msg.id = generateUniqueId();
-        }
-        seenIds.add(msg.id);
-        return msg;
-      });
-    };
-
     // 로컬 스토리지에서 기존 메시지 로드
     const saved = localStorage.getItem("wedding-guestbook");
     if (saved) {
@@ -44,35 +59,22 @@ const GuestbookSection = () => {
       } catch (error) {
         console.error("Failed to parse guestbook data:", error);
         // 파싱 실패 시 기본 메시지로 초기화
-        initializeDefaultMessages();
+        setGuestMessages(SAMPLE_MESSAGES);
+        localStorage.setItem(
+          "wedding-guestbook",
+          JSON.stringify(SAMPLE_MESSAGES)
+        );
       }
     } else {
-      initializeDefaultMessages();
-    }
-
-    function initializeDefaultMessages() {
-      // 샘플 방명록 메시지
-      const sampleMessages = [
-        {
-          name: "최원정",
-          message: "너무 아름다운 커플이에요~ 평생 행복하세요! 🎉",
-          date: "2025-10-14",
-          id: generateUniqueId(),
-        },
-        {
-          name: "임경민",
-          message:
-            "민석아 결혼 축하한다! 행복한 가정 만들어 나가길 응원할게 👏",
-          date: "2025-10-17",
-          id: generateUniqueId(),
-        },
-      ];
-      setGuestMessages(sampleMessages);
-      localStorage.setItem("wedding-guestbook", JSON.stringify(sampleMessages));
+      setGuestMessages(SAMPLE_MESSAGES);
+      localStorage.setItem(
+        "wedding-guestbook",
+        JSON.stringify(SAMPLE_MESSAGES)
+      );
     }
   }, []);
 
-  const addGuestMessage = () => {
+  const addGuestMessage = useCallback(() => {
     if (!newMessage.name || !newMessage.message) {
       alert("이름과 메시지를 입력해주세요.");
       return;
@@ -90,7 +92,7 @@ const GuestbookSection = () => {
         month: "2-digit",
         day: "2-digit",
       }),
-      id: Date.now() + Math.random().toString(36).substr(2, 9),
+      id: generateUniqueId(),
     };
 
     const updatedMessages = [messageToAdd, ...guestMessages];
@@ -100,14 +102,14 @@ const GuestbookSection = () => {
     // 입력 필드 초기화
     setNewMessage({ name: "", message: "" });
     alert("축하 메시지가 등록되었습니다!");
-  };
+  }, [newMessage, guestMessages]);
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = useCallback((field, value) => {
     setNewMessage((prev) => ({
       ...prev,
       [field]: value,
     }));
-  };
+  }, []);
 
   return (
     <section className="guestbook-section">

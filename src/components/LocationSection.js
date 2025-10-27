@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const LocationSection = () => {
@@ -6,21 +6,22 @@ const LocationSection = () => {
   const [locationRef, locationVisible] = useScrollAnimation({ threshold: 0.2 });
   const [mapRef, mapVisible] = useScrollAnimation({ threshold: 0.2 });
   const [showRouteMap, setShowRouteMap] = useState(false);
+  const mapInitialized = useRef(false);
 
   useEffect(() => {
-    if (!mapElement.current) return;
+    if (!mapElement.current || mapInitialized.current) return;
 
     // Naver Maps API가 로드될 때까지 대기
     const initMap = () => {
       if (!window.naver || !window.naver.maps) {
-        // 로드되지 않았다면 수동으로 로드 시도
-        if (typeof window.loadNaverMaps === "function") {
-          window.loadNaverMaps();
-        }
         // 다시 시도
         setTimeout(initMap, 500);
         return;
       }
+
+      // 중복 초기화 방지
+      if (mapInitialized.current) return;
+      mapInitialized.current = true;
 
       // 세인트 메리엘 정확한 좌표 (강남역 인근)
       const location = new window.naver.maps.LatLng(37.496105, 127.033005);
@@ -67,7 +68,7 @@ const LocationSection = () => {
     initMap();
   }, []);
 
-  const handleNavigation = (type) => {
+  const handleNavigation = useCallback((type) => {
     const address = "서울 강남구 논현로79길 72 세인트 메리엘";
     const placeName = "세인트 메리엘";
 
@@ -90,7 +91,7 @@ const LocationSection = () => {
     }
 
     window.open(url, "_blank");
-  };
+  }, []);
 
   return (
     <section className="location-section">
