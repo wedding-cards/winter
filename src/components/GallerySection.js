@@ -98,17 +98,20 @@ const GallerySection = () => {
     setTouchEnd(e.targetTouches[0].clientX);
   };
 
-  const onTouchEnd = () => {
+  const onTouchEnd = (e) => {
     if (!touchStart || !touchEnd) return;
 
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
-    if (isLeftSwipe) {
-      changeImage(1);
-    } else if (isRightSwipe) {
-      changeImage(-1);
+    if (isLeftSwipe || isRightSwipe) {
+      e.preventDefault();
+      if (isLeftSwipe) {
+        changeImage(1);
+      } else if (isRightSwipe) {
+        changeImage(-1);
+      }
     }
   };
 
@@ -157,7 +160,10 @@ const GallerySection = () => {
           <div className="gallery-more-wrapper">
             <button
               className="gallery-more-btn"
-              onClick={() => setShowMore(!showMore)}
+              onClick={(e) => {
+                e.preventDefault();
+                setShowMore(!showMore);
+              }}
             >
               {showMore ? (
                 <>
@@ -175,7 +181,13 @@ const GallerySection = () => {
         {/* 갤러리 모달 */}
         {modalOpen && (
           <div className="gallery-modal" onClick={closeModal}>
-            <span className="close-modal" onClick={closeModal}>
+            <span
+              className="close-modal"
+              onClick={(e) => {
+                e.preventDefault();
+                closeModal();
+              }}
+            >
               <i className="fas fa-times"></i>
             </span>
 
@@ -211,6 +223,7 @@ const GallerySection = () => {
                     index === currentImageIndex ? "active" : ""
                   }`}
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     goToImage(index);
                   }}
@@ -222,6 +235,7 @@ const GallerySection = () => {
             <button
               className="modal-nav-btn prev-btn"
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 changeImage(-1);
               }}
@@ -231,6 +245,7 @@ const GallerySection = () => {
             <button
               className="modal-nav-btn next-btn"
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 changeImage(1);
               }}
@@ -247,7 +262,10 @@ const GallerySection = () => {
                     className={`thumbnail-item ${
                       index === currentImageIndex ? "active" : ""
                     }`}
-                    onClick={() => goToImage(index)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      goToImage(index);
+                    }}
                   >
                     <picture>
                       <source
