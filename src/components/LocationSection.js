@@ -29,7 +29,14 @@ const LocationSection = () => {
       const mapOptions = {
         center: location,
         zoom: 17,
-        zoomControl: true,
+        draggable: false, // 드래그 잠금
+        pinchZoom: false, // 핀치 줌 잠금 (모바일)
+        scrollWheel: false, // 마우스 휠 줌 잠금
+        keyboardShortcuts: false, // 키보드 단축키 잠금
+        disableDoubleTapZoom: true, // 더블탭 줌 잠금
+        disableDoubleClickZoom: true, // 더블클릭 줌 잠금
+        disableTwoFingerTapZoom: true, // 두 손가락 탭 줌 잠금
+        zoomControl: true, // 줌 컨트롤 버튼만 허용
         zoomControlOptions: {
           position: window.naver.maps.Position.TOP_RIGHT,
         },
@@ -171,8 +178,7 @@ const LocationSection = () => {
                   <img
                     src="/assets/images/route-map.jpg"
                     alt="세인트 메리엘 약도 - 강남역에서 오시는 길 안내"
-                    width="100%"
-                    height="auto"
+                    style={{ width: "100%", height: "auto" }}
                   />
                 </picture>
               </div>

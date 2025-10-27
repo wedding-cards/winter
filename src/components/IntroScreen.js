@@ -1,32 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 
 const IntroScreen = ({ onComplete }) => {
   const [currentText, setCurrentText] = useState("");
   const [isComplete, setIsComplete] = useState(false);
 
-  const fullText = "민석 ♥ 수진 결혼식에 초대합니다";
+  const fullText = useMemo(() => "민석 ♥ 수진 결혼식에 초대합니다", []);
+
+  const handleComplete = useCallback(() => {
+    setIsComplete(true);
+    setTimeout(() => {
+      onComplete();
+    }, 1000);
+  }, [onComplete]);
 
   useEffect(() => {
     let index = 0;
     const timer = setInterval(() => {
       if (index < fullText.length) {
-        setCurrentText(fullText.substring(0, index + 1));
+        setCurrentText((prev) => fullText.substring(0, index + 1));
         index++;
       } else {
         clearInterval(timer);
-        // 텍스트 완성 후 2초 대기 후 페이드아웃
-        setTimeout(() => {
-          setIsComplete(true);
-          // 페이드아웃 애니메이션 후 메인 화면으로
-          setTimeout(() => {
-            onComplete();
-          }, 1000);
-        }, 2000);
+        setTimeout(handleComplete, 2000);
       }
-    }, 100); // 각 글자당 100ms 간격
+    }, 100);
 
     return () => clearInterval(timer);
-  }, [fullText, onComplete]);
+  }, [fullText, handleComplete]);
 
   return (
     <div className={`intro-screen ${isComplete ? "fade-out" : ""}`}>
@@ -40,4 +40,4 @@ const IntroScreen = ({ onComplete }) => {
   );
 };
 
-export default IntroScreen;
+export default React.memo(IntroScreen);

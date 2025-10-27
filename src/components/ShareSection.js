@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const ShareSection = () => {
@@ -10,7 +10,7 @@ const ShareSection = () => {
     "따뜻한 겨울날, 두 사람이 하나 되는 소중한 순간에 여러분을 초대합니다 💒";
 
   // 카카오톡 공유하기
-  const shareKakao = () => {
+  const shareKakao = useCallback(() => {
     if (window.Kakao && window.Kakao.isInitialized()) {
       window.Kakao.Share.sendDefault({
         objectType: "feed",
@@ -38,7 +38,7 @@ const ShareSection = () => {
         "카카오톡 공유 기능을 사용할 수 없습니다.\nKakao SDK를 확인해주세요."
       );
     }
-  };
+  }, [shareUrl, shareTitle, shareDescription]);
 
   return (
     <section className="share-section">
@@ -68,4 +68,4 @@ const ShareSection = () => {
   );
 };
 
-export default ShareSection;
+export default React.memo(ShareSection);
