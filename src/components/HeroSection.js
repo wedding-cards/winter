@@ -26,7 +26,7 @@ const HeroSection = () => {
               id="mainPhoto"
               width="280"
               height="350"
-              fetchpriority="high"
+              fetchPriority="high"
             />
           </picture>
         </div>

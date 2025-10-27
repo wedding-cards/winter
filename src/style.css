@@ -16,6 +16,58 @@
     --snow-white: #FFFFFF;
 }
 
+/* 인트로 스크린 스타일 */
+.intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #f8f4f4 0%, #ffffff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 1s ease;
+}
+
+.intro-screen.fade-out {
+    opacity: 0;
+}
+
+.intro-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.intro-text {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.8;
+    letter-spacing: 2px;
+    white-space: pre-line;
+}
+
+.cursor {
+    animation: blink 1s infinite;
+    color: var(--primary-color);
+    font-weight: 300;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+    .intro-text {
+        font-size: 18px;
+        letter-spacing: 1px;
+    }
+}
+
 /* 전체 리셋 및 기본 설정 */
 * {
     margin: 0;
@@ -156,7 +208,7 @@ body[style*="overflow: hidden"] section {
     position: fixed;
     top: 80px;
     right: 20px;
-    background: rgba(107, 142, 159, 0.95);
+    background: #D4A5A5;
     color: white;
     padding: 12px 18px;
     border-radius: 12px;
@@ -203,6 +255,17 @@ body[style*="overflow: hidden"] section {
 .hero-content {
     position: relative;
     z-index: 2;
+}
+
+.wedding-intro {
+    font-size: 18px;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(212, 165, 165, 0.3);
 }
 
 .wedding-date {
@@ -374,6 +437,12 @@ section {
 .parent-name {
     color: var(--text-secondary);
     font-weight: 500;
+}
+
+.deceased-mark {
+    font-size: 14px;
+    margin-left: 6px;
+    opacity: 0.8;
 }
 
 .parent-separator {
@@ -972,6 +1041,57 @@ section {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* 약도 보기 섹션 */
+.route-map-section {
+    margin: 30px 20px;
+}
+
+.route-map-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(212, 165, 165, 0.3);
+}
+
+.route-map-btn:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(212, 165, 165, 0.4);
+}
+
+.route-map-container {
+    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.route-map-image {
+    width: 100%;
+    line-height: 0;
+}
+
+.route-map-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
 .nav-link:active {
     transform: translateY(-1px);
 }
@@ -993,34 +1113,48 @@ section {
     width: 100%;
     min-height: 100px;
     padding: 15px;
-    border: 2px solid transparent;
+    border: 2px solid rgba(212, 165, 165, 0.3);
     border-radius: 10px;
     margin-bottom: 15px;
     font-family: inherit;
     font-size: 14px;
     resize: vertical;
     background: var(--pure-white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .guestbook-form textarea:focus {
-    border-color: var(--violet-accent);
+    border-color: var(--primary-color);
     outline: none;
+    box-shadow: 0 4px 12px rgba(212, 165, 165, 0.2);
+}
+
+.guestbook-form textarea::placeholder {
+    color: var(--text-light);
+    font-style: italic;
 }
 
 .guestbook-form input {
     width: 100%;
     padding: 12px 15px;
-    border: 2px solid transparent;
+    border: 2px solid rgba(212, 165, 165, 0.3);
     border-radius: 8px;
     margin-bottom: 15px;
     font-family: inherit;
     font-size: 14px;
     background: var(--pure-white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .guestbook-form input:focus {
-    border-color: var(--violet-accent);
+    border-color: var(--primary-color);
     outline: none;
+    box-shadow: 0 4px 12px rgba(212, 165, 165, 0.2);
+}
+
+.guestbook-form input::placeholder {
+    color: var(--text-light);
+    font-style: italic;
 }
 
 .guestbook-form button {

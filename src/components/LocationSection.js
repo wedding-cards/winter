@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const LocationSection = () => {
   const mapElement = useRef(null);
   const [locationRef, locationVisible] = useScrollAnimation({ threshold: 0.2 });
   const [mapRef, mapVisible] = useScrollAnimation({ threshold: 0.2 });
+  const [showRouteMap, setShowRouteMap] = useState(false);
 
   useEffect(() => {
     if (!mapElement.current) return;
@@ -147,6 +148,37 @@ const LocationSection = () => {
           </button>
         </div>
 
+        {/* 약도 보기 버튼 */}
+        <div className="route-map-section">
+          <button
+            className="route-map-btn"
+            onClick={() => setShowRouteMap(!showRouteMap)}
+          >
+            <i className="fas fa-map"></i>
+            <span>{showRouteMap ? "약도 닫기" : "약도 보기"}</span>
+          </button>
+
+          {/* 약도 이미지 */}
+          {showRouteMap && (
+            <div className="route-map-container fade-in">
+              <div className="route-map-image">
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcSet="/assets/images/route-map.webp"
+                  />
+                  <img
+                    src="/assets/images/route-map.jpg"
+                    alt="세인트 메리엘 약도 - 강남역에서 오시는 길 안내"
+                    width="100%"
+                    height="auto"
+                  />
+                </picture>
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* 교통편 안내 */}
         <div className="transport-info-clean">
           <div className="transport-item-clean">
@@ -182,10 +214,8 @@ const LocationSection = () => {
               <i className="fas fa-car"></i>
             </div>
             <h4 className="transport-title">자가용</h4>
-            <p className="transport-desc">
-              서울 강남구 논현로79길 72 (역삼동 828-10)
-            </p>
-            <p className="transport-desc">우편번호: 06239</p>
+            <p className="transport-desc">서울 강남구 논현로 79길 72</p>
+            <p className="transport-desc">올림피아센터 빌딩</p>
             <p className="transport-desc">
               건물 내 주차 가능 (발렛 서비스 제공)
             </p>

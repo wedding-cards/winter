@@ -30,9 +30,9 @@ const InvitationSection = () => {
             <div className="parent-badge groom-badge">신랑</div>
             <div className="parent-content">
               <div className="parent-names">
-                <span className="parent-name">부 김민석</span>
+                <span className="parent-name">부 김용기</span>
                 <span className="parent-separator">·</span>
-                <span className="parent-name">모 김민석</span>
+                <span className="parent-name">모 박길순</span>
               </div>
               <div className="child-info">
                 <span className="child-relation">의 아들</span>
@@ -46,9 +46,12 @@ const InvitationSection = () => {
             <div className="parent-badge bride-badge">신부</div>
             <div className="parent-content">
               <div className="parent-names">
-                <span className="parent-name">부 강수진</span>
+                <span className="parent-name">
+                  부 강형수
+                  <span className="deceased-mark">🌸</span>
+                </span>
                 <span className="parent-separator">·</span>
-                <span className="parent-name">모 강수진</span>
+                <span className="parent-name">모 김애정</span>
               </div>
               <div className="child-info">
                 <span className="child-relation">의 딸</span>

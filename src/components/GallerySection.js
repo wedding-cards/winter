@@ -12,13 +12,25 @@ const GallerySection = () => {
 
   // 웨딩 사진들
   const galleryImages = [
-    "/assets/images/1.jpg",
-    "/assets/images/2.jpg",
-    "/assets/images/3.jpg",
-    "/assets/images/4.jpg",
-    "/assets/images/5.jpg",
-    "/assets/images/6.jpg",
-    "/assets/images/7.jpg",
+    "/assets/images/gallery/1.jpg",
+    "/assets/images/gallery/2.jpg",
+    "/assets/images/gallery/3.jpg",
+    "/assets/images/gallery/4.jpg",
+    "/assets/images/gallery/5.jpg",
+    "/assets/images/gallery/6.jpg",
+    "/assets/images/gallery/7.jpg",
+    "/assets/images/gallery/8.jpg",
+    "/assets/images/gallery/9.jpg",
+    "/assets/images/gallery/10.jpg",
+    "/assets/images/gallery/11.jpg",
+    "/assets/images/gallery/12.jpg",
+    "/assets/images/gallery/13.jpg",
+    "/assets/images/gallery/14.jpg",
+    "/assets/images/gallery/15.jpg",
+    "/assets/images/gallery/16.jpg",
+    "/assets/images/gallery/17.jpg",
+    "/assets/images/gallery/18.jpg",
+    "/assets/images/gallery/19.jpg",
   ];
 
   const initialDisplayCount = 6; // 처음에 보여줄 이미지 개수
@@ -114,22 +126,30 @@ const GallerySection = () => {
             galleryVisible ? "visible" : ""
           }`}
         >
-          {displayedImages.map((src, index) => (
-            <div
-              key={index}
-              className="gallery-item"
-              onClick={() => openModal(index)}
-            >
-              <img
-                src={src}
-                alt={`민석과 수진의 웨딩 사진 ${index + 1} - 결혼식 스냅 사진`}
-                loading="lazy"
-              />
-              <div className="gallery-overlay">
-                <i className="fas fa-search-plus"></i>
+          {displayedImages.map((src, index) => {
+            const webpSrc = src.replace(".jpg", ".webp");
+            return (
+              <div
+                key={index}
+                className="gallery-item"
+                onClick={() => openModal(index)}
+              >
+                <picture>
+                  <source type="image/webp" srcSet={webpSrc} />
+                  <img
+                    src={src}
+                    alt={`민석과 수진의 웨딩 사진 ${
+                      index + 1
+                    } - 결혼식 스냅 사진`}
+                    loading="lazy"
+                  />
+                </picture>
+                <div className="gallery-overlay">
+                  <i className="fas fa-search-plus"></i>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* 더보기 버튼 */}
@@ -166,11 +186,20 @@ const GallerySection = () => {
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
             >
-              <img
-                className="modal-main-image"
-                src={galleryImages[currentImageIndex]}
-                alt="확대된 웨딩 사진"
-              />
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet={galleryImages[currentImageIndex].replace(
+                    ".jpg",
+                    ".webp"
+                  )}
+                />
+                <img
+                  className="modal-main-image"
+                  src={galleryImages[currentImageIndex]}
+                  alt="확대된 웨딩 사진"
+                />
+              </picture>
             </div>
 
             {/* 페이지네이션 도트 */}
@@ -220,7 +249,13 @@ const GallerySection = () => {
                     }`}
                     onClick={() => goToImage(index)}
                   >
-                    <img src={src} alt={`썸네일 ${index + 1}`} />
+                    <picture>
+                      <source
+                        type="image/webp"
+                        srcSet={src.replace(".jpg", ".webp")}
+                      />
+                      <img src={src} alt={`썸네일 ${index + 1}`} />
+                    </picture>
                   </div>
                 ))}
               </div>

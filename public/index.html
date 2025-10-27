@@ -1,114 +1,123 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon.png" />
-    <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#8B1538" />
-    
-    <!-- 기본 메타 태그 -->
-    <meta name="description" content="따뜻한 겨울날, 두 사람이 하나 되는 소중한 순간에 여러분을 초대합니다. 민석 ❤️ 수진 결혼식 | 2025년 12월 13일 토요일 오후 3시 | 세인트 메리엘" />
-    <meta name="keywords" content="결혼식, 웨딩, 청첩장, 모바일청첩장, 민석, 수진, 세인트메리엘" />
-    <meta name="author" content="민석 & 수진" />
-    
-    <!-- Open Graph (Facebook, KakaoTalk) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="민석 ❤️ 수진 결혼식 초대장" />
-    <meta property="og:description" content="따뜻한 겨울날, 두 사람이 하나 되는 소중한 순간에 여러분을 초대합니다 💒 2025년 12월 13일 토요일 오후 3시 | 세인트 메리엘" />
-    <meta property="og:image" content="%PUBLIC_URL%/og-image.jpg" />
-    <meta property="og:url" content="https://minseok-loves-sujin.netlify.app" />
-    <meta property="og:site_name" content="민석 ❤️ 수진 결혼식" />
-    <meta property="og:locale" content="ko_KR" />
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="민석 ❤️ 수진 결혼식 초대장" />
-    <meta name="twitter:description" content="따뜻한 겨울날, 두 사람이 하나 되는 소중한 순간에 여러분을 초대합니다 💒" />
-    <meta name="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
-    
-    <!-- 카카오톡 미리보기 -->
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.png" />
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon.png" />
+  <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#8B1538" />
+
+  <!-- 기본 메타 태그 -->
+  <meta name="description"
+    content="따뜻한 겨울날, 두 사람이 하나 되는 소중한 순간에 여러분을 초대합니다. 민석 ❤️ 수진 결혼식 | 2025년 12월 13일 토요일 오후 3시 | 세인트 메리엘" />
+  <meta name="keywords" content="결혼식, 웨딩, 청첩장, 모바일청첩장, 민석, 수진, 세인트메리엘" />
+  <meta name="author" content="민석 & 수진" />
+
+  <!-- Open Graph (Facebook, KakaoTalk) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="민석 ❤️ 수진 결혼식 초대장" />
+  <meta property="og:description"
+    content="따뜻한 겨울날, 두 사람이 하나 되는 소중한 순간에 여러분을 초대합니다 💒 2025년 12월 13일 토요일 오후 3시 | 세인트 메리엘" />
+  <meta property="og:image" content="%PUBLIC_URL%/og-image.jpg" />
+  <meta property="og:url" content="https://minseok-loves-sujin.netlify.app" />
+  <meta property="og:site_name" content="민석 ❤️ 수진 결혼식" />
+  <meta property="og:locale" content="ko_KR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="민석 ❤️ 수진 결혼식 초대장" />
+  <meta name="twitter:description" content="따뜻한 겨울날, 두 사람이 하나 되는 소중한 순간에 여러분을 초대합니다 💒" />
+  <meta name="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
+
+  <!-- 카카오톡 미리보기 -->
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.png" />
+  <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    
-    <!-- DNS prefetch for external resources -->
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="https://oapi.map.naver.com">
-    <link rel="dns-prefetch" href="https://t1.kakaocdn.net">
-    
-    <!-- Preload critical image -->
-    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/couple-main.webp" type="image/webp" />
-    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/couple-main.jpg" />
-    
-    <!-- Font Awesome - 비동기 로딩 -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" /></noscript>
-    
-    <!-- Google Fonts - 비동기 로딩 (실제 사용하는 폰트만) + font-display:swap -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet"></noscript>
-    
-    <!-- Naver Maps API - 지연 로딩 -->
-    <script>
-      // Naver Maps API를 필요할 때만 로드하도록 지연
-      window.loadNaverMaps = function() {
-        if (!window.naver || !window.naver.maps) {
-          var script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.src = 'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=r495xzxrv7';
-          document.head.appendChild(script);
-        }
-      };
-      
-      // IntersectionObserver를 사용해 지도 섹션이 보일 때 로드
-      if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-              window.loadNaverMaps();
-              observer.disconnect();
-            }
-          });
-        }, { rootMargin: '200px' });
-        
-        window.addEventListener('DOMContentLoaded', function() {
-          var mapElement = document.getElementById('map');
-          if (mapElement) {
-            observer.observe(mapElement);
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+  <!-- DNS prefetch for external resources -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://oapi.map.naver.com">
+  <link rel="dns-prefetch" href="https://t1.kakaocdn.net">
+
+  <!-- Preload critical image - only WebP for modern browsers -->
+  <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/couple-main.webp" type="image/webp" />
+
+  <!-- Font Awesome - 비동기 로딩 -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </noscript>
+
+  <!-- Google Fonts - 비동기 로딩 (실제 사용하는 폰트만) + font-display:swap -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap"
+    as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap"
+      rel="stylesheet">
+  </noscript>
+
+  <!-- Naver Maps API - 지연 로딩 -->
+  <script>
+    // Naver Maps API를 필요할 때만 로드하도록 지연
+    window.loadNaverMaps = function () {
+      if (!window.naver || !window.naver.maps) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=r495xzxrv7';
+        document.head.appendChild(script);
+      }
+    };
+
+    // IntersectionObserver를 사용해 지도 섹션이 보일 때 로드
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            window.loadNaverMaps();
+            observer.disconnect();
           }
         });
-      } else {
-        // IntersectionObserver를 지원하지 않는 경우 일정 시간 후 로드
-        window.addEventListener('load', function() {
-          setTimeout(window.loadNaverMaps, 2000);
-        });
-      }
-    </script>
-    
-    <!-- Kakao SDK - 비동기 로딩 -->
-    <script async src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" 
-            integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" 
-            crossorigin="anonymous"
-            onload="
+      }, { rootMargin: '200px' });
+
+      window.addEventListener('DOMContentLoaded', function () {
+        var mapElement = document.getElementById('map');
+        if (mapElement) {
+          observer.observe(mapElement);
+        }
+      });
+    } else {
+      // IntersectionObserver를 지원하지 않는 경우 일정 시간 후 로드
+      window.addEventListener('load', function () {
+        setTimeout(window.loadNaverMaps, 2000);
+      });
+    }
+  </script>
+
+  <!-- Kakao SDK - 비동기 로딩 -->
+  <script async src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"
+    integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous" onload="
               if (window.Kakao && !window.Kakao.isInitialized()) {
                 window.Kakao.init('567e7c42c3243a0d510faa9b02f3341b');
                 console.log('Kakao SDK 초기화 완료:', window.Kakao.isInitialized());
               }
             "></script>
-    
-    <!-- JSON-LD for SEO -->
-    <script type="application/ld+json">
+
+  <!-- JSON-LD for SEO -->
+  <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Event",
@@ -141,7 +150,7 @@
       }
     }
     </script>
-    <!--
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -150,12 +159,13 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>민석 ❤️ 수진 결혼식에 초대합니다</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
+  <title>민석 ❤️ 수진 결혼식에 초대합니다</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -165,5 +175,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
+
 </html>

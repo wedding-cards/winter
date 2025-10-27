@@ -8,29 +8,63 @@ const GuestbookSection = () => {
   const [newMessage, setNewMessage] = useState({
     name: "",
     message: "",
-    password: "",
   });
 
   useEffect(() => {
+    // 고유한 ID 생성 함수
+    const generateUniqueId = () => {
+      return Date.now() + Math.random().toString(36).substr(2, 9);
+    };
+
+    // ID 중복 확인 및 수정 함수
+    const ensureUniqueIds = (messages) => {
+      const seenIds = new Set();
+      return messages.map((msg) => {
+        if (seenIds.has(msg.id) || !msg.id) {
+          // 중복되거나 없는 ID를 새로운 고유 ID로 교체
+          msg.id = generateUniqueId();
+        }
+        seenIds.add(msg.id);
+        return msg;
+      });
+    };
+
     // 로컬 스토리지에서 기존 메시지 로드
     const saved = localStorage.getItem("wedding-guestbook");
     if (saved) {
-      setGuestMessages(JSON.parse(saved));
+      try {
+        const parsedMessages = JSON.parse(saved);
+        const messagesWithUniqueIds = ensureUniqueIds(parsedMessages);
+        setGuestMessages(messagesWithUniqueIds);
+        // 수정된 데이터를 다시 저장
+        localStorage.setItem(
+          "wedding-guestbook",
+          JSON.stringify(messagesWithUniqueIds)
+        );
+      } catch (error) {
+        console.error("Failed to parse guestbook data:", error);
+        // 파싱 실패 시 기본 메시지로 초기화
+        initializeDefaultMessages();
+      }
     } else {
+      initializeDefaultMessages();
+    }
+
+    function initializeDefaultMessages() {
       // 샘플 방명록 메시지
       const sampleMessages = [
         {
           name: "최원정",
           message: "너무 아름다운 커플이에요~ 평생 행복하세요! 🎉",
           date: "2025-10-14",
-          id: Date.now() - 300000,
+          id: generateUniqueId(),
         },
         {
           name: "임경민",
           message:
             "민석아 결혼 축하한다! 행복한 가정 만들어 나가길 응원할게 👏",
           date: "2025-10-17",
-          id: Date.now() - 300000,
+          id: generateUniqueId(),
         },
       ];
       setGuestMessages(sampleMessages);
@@ -39,8 +73,8 @@ const GuestbookSection = () => {
   }, []);
 
   const addGuestMessage = () => {
-    if (!newMessage.name || !newMessage.message || !newMessage.password) {
-      alert("모든 필드를 입력해주세요.");
+    if (!newMessage.name || !newMessage.message) {
+      alert("이름과 메시지를 입력해주세요.");
       return;
     }
 
@@ -56,7 +90,7 @@ const GuestbookSection = () => {
         month: "2-digit",
         day: "2-digit",
       }),
-      id: Date.now(),
+      id: Date.now() + Math.random().toString(36).substr(2, 9),
     };
 
     const updatedMessages = [messageToAdd, ...guestMessages];
@@ -64,7 +98,7 @@ const GuestbookSection = () => {
     localStorage.setItem("wedding-guestbook", JSON.stringify(updatedMessages));
 
     // 입력 필드 초기화
-    setNewMessage({ name: "", message: "", password: "" });
+    setNewMessage({ name: "", message: "" });
     alert("축하 메시지가 등록되었습니다!");
   };
 
@@ -96,12 +130,6 @@ const GuestbookSection = () => {
             value={newMessage.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
             placeholder="이름"
-          />
-          <input
-            type="password"
-            value={newMessage.password}
-            onChange={(e) => handleInputChange("password", e.target.value)}
-            placeholder="비밀번호"
           />
           <button onClick={addGuestMessage}>메시지 남기기</button>
         </div>

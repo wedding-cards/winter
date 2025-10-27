@@ -81,12 +81,12 @@ const AccountSection = () => {
                   <span className="account-name">김민석</span>
                 </div>
                 <div className="account-row">
-                  <span className="account-number">우리 1234567890</span>
+                  <span className="account-number">신한 110-402-113207</span>
                   <button
                     className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount("1234567890");
+                      copyAccount("110-402-113207");
                     }}
                     title="계좌번호 복사"
                   >
@@ -98,35 +98,15 @@ const AccountSection = () => {
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">아버지</span>
-                  <span className="account-name">김민석</span>
+                  <span className="account-name">김용기</span>
                 </div>
                 <div className="account-row">
-                  <span className="account-number">국민 22292000222</span>
+                  <span className="account-number">농협 100049-52-084603</span>
                   <button
                     className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount("22292000222");
-                    }}
-                    title="계좌번호 복사"
-                  >
-                    <i className="far fa-copy"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div className="account-person">
-                <div className="account-row">
-                  <span className="account-label">어머니</span>
-                  <span className="account-name">김민석</span>
-                </div>
-                <div className="account-row">
-                  <span className="account-number">기업 30303029222</span>
-                  <button
-                    className="copy-icon-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      copyAccount("30303029222");
+                      copyAccount("100049-52-084603");
                     }}
                     title="계좌번호 복사"
                   >
@@ -161,32 +141,14 @@ const AccountSection = () => {
                   <span className="account-name">강수진</span>
                 </div>
                 <div className="account-row">
-                  <span className="account-number">카카오 3333031697843</span>
+                  <span className="account-number">
+                    카카오뱅크 3333-26-1873139
+                  </span>
                   <button
                     className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount("3333031697843");
-                    }}
-                    title="계좌번호 복사"
-                  >
-                    <i className="far fa-copy"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div className="account-person">
-                <div className="account-row">
-                  <span className="account-label">아버지</span>
-                  <span className="account-name">강수진</span>
-                </div>
-                <div className="account-row">
-                  <span className="account-number">신한 998877665544</span>
-                  <button
-                    className="copy-icon-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      copyAccount("998877665544");
+                      copyAccount("3333-26-1873139");
                     }}
                     title="계좌번호 복사"
                   >
@@ -198,15 +160,17 @@ const AccountSection = () => {
               <div className="account-person">
                 <div className="account-row">
                   <span className="account-label">어머니</span>
-                  <span className="account-name">강수진</span>
+                  <span className="account-name">김애정</span>
                 </div>
                 <div className="account-row">
-                  <span className="account-number">농협 1029384756</span>
+                  <span className="account-number">
+                    카카오뱅크 3333-25-4445586
+                  </span>
                   <button
                     className="copy-icon-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      copyAccount("1029384756");
+                      copyAccount("3333-25-4445586");
                     }}
                     title="계좌번호 복사"
                   >
