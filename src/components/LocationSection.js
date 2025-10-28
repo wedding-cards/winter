@@ -14,8 +14,9 @@ const LocationSection = () => {
     // Naver Maps API가 로드될 때까지 대기
     const initMap = () => {
       if (!window.naver || !window.naver.maps) {
+        console.log('Naver Maps API not loaded yet, retrying...');
         // 다시 시도
-        setTimeout(initMap, 500);
+        setTimeout(initMap, 1000);
         return;
       }
 
@@ -70,9 +71,28 @@ const LocationSection = () => {
 
       // 초기에 정보창 표시
       infoWindow.open(map, marker);
+      console.log('Naver Maps initialized successfully');
     };
 
-    initMap();
+    // API 로딩 완료 이벤트 리스너
+    const handleNaverMapsLoaded = () => {
+      console.log('Naver Maps API loaded event received');
+      setTimeout(initMap, 100); // 약간의 지연 후 초기화
+    };
+
+    // 이미 로드되어 있다면 즉시 초기화
+    if (window.naver && window.naver.maps) {
+      initMap();
+    } else {
+      // API 로딩 완료 이벤트 대기
+      window.addEventListener('naverMapsLoaded', handleNaverMapsLoaded);
+      // 폴백으로 주기적 확인
+      initMap();
+    }
+
+    return () => {
+      window.removeEventListener('naverMapsLoaded', handleNaverMapsLoaded);
+    };
   }, []);
 
   const handleNavigation = useCallback((type) => {
@@ -122,6 +142,7 @@ const LocationSection = () => {
 
         {/* 지도 - 네이버 지도 */}
         <div
+          id="map"
           ref={(el) => {
             mapElement.current = el;
             mapRef.current = el;

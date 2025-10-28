@@ -45,6 +45,12 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    // React 앱이 마운트되면 정적 콘텐츠 숨기기
+    const staticContent = document.querySelector('.app-loading');
+    if (staticContent) {
+      staticContent.style.display = 'none';
+    }
+    
     if (!showIntro) {
       setIsLoaded(true);
     }

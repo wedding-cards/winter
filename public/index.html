@@ -71,41 +71,19 @@
       rel="stylesheet">
   </noscript>
 
-  <!-- Naver Maps API - 지연 로딩 -->
+  <!-- Naver Maps API - 직접 로딩 -->
+  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=r495xzxrv7"></script>
+  
   <script>
-    // Naver Maps API를 필요할 때만 로드하도록 지연
-    window.loadNaverMaps = function () {
-      if (!window.naver || !window.naver.maps) {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=r495xzxrv7';
-        document.head.appendChild(script);
+    // 네이버 지도 API 로딩 확인
+    window.addEventListener('load', function() {
+      if (window.naver && window.naver.maps) {
+        console.log('Naver Maps API loaded successfully');
+        window.dispatchEvent(new Event('naverMapsLoaded'));
+      } else {
+        console.error('Failed to load Naver Maps API');
       }
-    };
-
-    // IntersectionObserver를 사용해 지도 섹션이 보일 때 로드
-    if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            window.loadNaverMaps();
-            observer.disconnect();
-          }
-        });
-      }, { rootMargin: '200px' });
-
-      window.addEventListener('DOMContentLoaded', function () {
-        var mapElement = document.getElementById('map');
-        if (mapElement) {
-          observer.observe(mapElement);
-        }
-      });
-    } else {
-      // IntersectionObserver를 지원하지 않는 경우 일정 시간 후 로드
-      window.addEventListener('load', function () {
-        setTimeout(window.loadNaverMaps, 2000);
-      });
-    }
+    });
   </script>
 
   <!-- Kakao SDK - 비동기 로딩 -->
@@ -116,6 +94,31 @@
                 console.log('Kakao SDK 초기화 완료:', window.Kakao.isInitialized());
               }
             "></script>
+
+  <!-- Resource Hints for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="//oapi.map.naver.com">
+  <link rel="dns-prefetch" href="//t1.kakaocdn.net">
+  
+  <!-- Preload critical images -->
+  <link rel="preload" href="%PUBLIC_URL%/assets/images/gallery/1.jpg" as="image">
+  <link rel="preload" href="%PUBLIC_URL%/assets/images/gallery/2.jpg" as="image">
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('SW registered: ', registration);
+          })
+          .catch(function(registrationError) {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
 
   <!-- JSON-LD for SEO -->
   <script type="application/ld+json">
@@ -165,7 +168,171 @@
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  
+  <!-- 즉시 렌더링되는 핵심 콘텐츠 -->
+  <div id="root">
+    <div class="app-loading">
+      <!-- Hero Section - 정적 콘텐츠 -->
+      <header class="main-header">
+        <div class="hero-section">
+          <div class="hero-content">
+            <div class="wedding-date">2025년 12월 13일 토요일</div>
+            <div class="couple-names">
+              <span class="groom-name">민석</span>
+              <span class="heart">♥</span>
+              <span class="bride-name">수진</span>
+            </div>
+            <div class="wedding-time">오후 3시</div>
+            <div class="wedding-venue">세인트 메리엘</div>
+          </div>
+          <div class="hero-image">
+            <img src="/assets/images/couple-main.jpg" alt="신랑 민석과 신부 수진의 웨딩 사진" width="280" height="350">
+          </div>
+        </div>
+      </header>
+      
+      <!-- 로딩 인디케이터 -->
+      <div class="loading-overlay">
+        <div class="spinner"></div>
+        <p>잠시만 기다려주세요...</p>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    /* 즉시 렌더링을 위한 인라인 CSS */
+    .app-loading {
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .main-header {
+      background: #FFFFFF;
+      padding: 60px 0 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-section {
+      background: #FFFFFF;
+      padding: 60px 20px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .wedding-date {
+      font-size: 16px;
+      color: #D4A5A5;
+      font-weight: 500;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+    
+    .couple-names {
+      font-size: 42px;
+      font-weight: 700;
+      margin: 20px 0;
+      color: #4A4A4A;
+      font-family: 'Cormorant Garamond', 'Nanum Myeongjo', serif;
+      letter-spacing: 2px;
+    }
+    
+    .wedding-venue {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 17px;
+      color: #D4A5A5;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    
+    .couple-names .heart {
+      color: #d08c95;
+      margin: 0 15px;
+      font-size: 36px;
+    }
+    
+    .groom-name, .bride-name {
+      font-family: 'Cormorant Garamond', 'Nanum Myeongjo', serif;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+    
+    .wedding-time {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 18px;
+      color: #7A7A7A;
+      margin: 15px 0;
+      font-weight: 500;
+    }
+    
+    .hero-image {
+      margin-top: 40px;
+      position: relative;
+    }
+    
+    .hero-image img {
+      width: 280px;
+      height: 350px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 8px 25px rgba(212, 165, 165, 0.08);
+    }
+    
+    .wedding-message {
+      font-size: 16px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #D4A5A5;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-overlay p {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .couple-names {
+        font-size: 2rem;
+      }
+    }
+  </style>
   <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
