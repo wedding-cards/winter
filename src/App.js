@@ -14,6 +14,7 @@ const LocationSection = lazy(() => import("./components/LocationSection"));
 const GuestbookSection = lazy(() => import("./components/GuestbookSection"));
 const AccountSection = lazy(() => import("./components/AccountSection"));
 const LoveQuoteSection = lazy(() => import("./components/LoveQuoteSection"));
+const WreathSection = lazy(() => import("./components/WreathSection"));
 const ShareSection = lazy(() => import("./components/ShareSection"));
 const Footer = lazy(() => import("./components/Footer"));
 
@@ -46,11 +47,11 @@ function App() {
 
   useEffect(() => {
     // React 앱이 마운트되면 정적 콘텐츠 숨기기
-    const staticContent = document.querySelector('.app-loading');
+    const staticContent = document.querySelector(".app-loading");
     if (staticContent) {
-      staticContent.style.display = 'none';
+      staticContent.style.display = "none";
     }
-    
+
     if (!showIntro) {
       setIsLoaded(true);
     }
@@ -84,6 +85,7 @@ function App() {
         <GuestbookSection />
         <AccountSection />
         <LoveQuoteSection />
+        <WreathSection />
         <ShareSection />
         <Footer />
       </Suspense>
