@@ -29,7 +29,8 @@ const WreathSection = () => {
               sectionVisible ? "visible" : ""
             }`}
           >
-            <h2 className="wreath-title">축하화환 보내기</h2>
+            <p className="section-subtitle">WREATH</p>
+            <h2 className="section-title">축하화환 보내기</h2>
             <p className="wreath-description">축하의 마음을 담아 전해보세요</p>
 
             <div className="wreath-card" onClick={handleWreathClick}>
@@ -73,7 +74,6 @@ const WreathSection = () => {
               </div>
 
               <div className="wreath-popup-details">
-                <p>따로 정보를 입력할 필요 없이</p>
                 <p>예식일시에 맞춰 웨딩홀로 배송됩니다.</p>
                 <p>간편하게 축하의 마음을 전해보세요.</p>
               </div>

@@ -2232,10 +2232,10 @@ section {
 .wreath-popup {
     background: var(--background);
     border-radius: 20px;
-    padding: 40px 30px;
-    max-width: 450px;
+    padding: 30px 25px;
+    max-width: 420px;
     width: 90%;
-    max-height: 90vh;
+    max-height: 85vh;
     overflow-y: auto;
     position: relative;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -2269,37 +2269,37 @@ section {
 
 .wreath-popup-title {
     font-family: 'Nanum Myeongjo', serif;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 600;
     color: var(--primary-color);
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     letter-spacing: 1px;
 }
 
 .wreath-popup-image {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .popup-wreath-image {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     object-fit: contain;
     border-radius: 15px;
 }
 
 .wreath-popup-details {
-    margin-bottom: 30px;
-    padding: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
     background: #fafafa;
     border-radius: 15px;
     border-left: 4px solid var(--primary-color);
 }
 
 .wreath-popup-details p {
-    font-size: 16px;
+    font-size: 14px;
     color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 8px;
+    line-height: 1.5;
+    margin-bottom: 6px;
 }
 
 .wreath-popup-details p:last-child {
@@ -2309,19 +2309,19 @@ section {
 }
 
 .wreath-popup-info {
-    margin-bottom: 35px;
+    margin-bottom: 25px;
     text-align: left;
 }
 
 .info-item {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
-    font-size: 15px;
+    margin-bottom: 12px;
+    font-size: 14px;
     color: var(--text-secondary);
-    padding: 12px;
+    padding: 10px;
     background: #fafafa;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .info-item:last-child {
@@ -2329,9 +2329,9 @@ section {
 }
 
 .info-icon {
-    margin-right: 12px;
-    font-size: 16px;
-    width: 20px;
+    margin-right: 10px;
+    font-size: 14px;
+    width: 18px;
     text-align: center;
 }
 
@@ -2407,34 +2407,43 @@ section {
     }
 
     .wreath-popup {
-        padding: 30px 20px;
-        margin: 20px;
+        padding: 25px 20px;
+        margin: 15px;
         max-width: none;
-        width: calc(100% - 40px);
+        width: calc(100% - 30px);
+        max-height: 80vh;
     }
 
     .wreath-popup-title {
-        font-size: 24px;
-        margin-bottom: 20px;
+        font-size: 22px;
+        margin-bottom: 15px;
     }
 
     .popup-wreath-image {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
     }
 
     .wreath-popup-details {
-        padding: 15px;
-        margin-bottom: 25px;
+        padding: 12px;
+        margin-bottom: 15px;
     }
 
     .wreath-popup-details p {
-        font-size: 15px;
+        font-size: 13px;
+        line-height: 1.4;
     }
 
     .info-item {
-        font-size: 14px;
-        padding: 10px;
+        font-size: 12px;
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+
+    .info-icon {
+        margin-right: 8px;
+        font-size: 12px;
+        width: 16px;
     }
 
     .wreath-send-btn {
