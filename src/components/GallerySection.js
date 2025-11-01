@@ -235,17 +235,14 @@ const GallerySection = ({
                   e.stopPropagation();
                   openModal(index);
                 }}
-                onTouchStart={(e) => {
-                  e.preventDefault(); // 모바일 터치 새로고침 방지
-                  console.log(`Touch start on image ${index}`); // 디버깅용
+                onTouchStart={() => {
+                  console.log(`Touch start on image ${index}`);
                 }}
-                onTouchEnd={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log(`Touch end on image ${index}`); // 디버깅용
+                onTouchEnd={() => {
+                  console.log(`Touch end on image ${index}`);
                   const result = openModal(index);
                   if (!result) {
-                    console.log("Modal opening blocked"); // 디버깅용
+                    console.log("Modal opening blocked");
                   }
                 }}
                 role="button"
@@ -304,15 +301,11 @@ const GallerySection = ({
                   setIsLoadingMore(false);
                 }, 100);
               }}
-              onTouchStart={(e) => {
-                e.preventDefault(); // 모바일 터치 새로고침 방지
-                console.log("Touch start on more button"); // 디버깅용
+              onTouchStart={() => {
+                console.log("Touch start on more button");
               }}
-              onTouchEnd={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                if (isLoadingMore) return; // 로딩 중이면 무시
+              onTouchEnd={() => {
+                if (isLoadingMore) return;
 
                 console.log(
                   "Touch end on more button, current showMore:",
@@ -320,7 +313,6 @@ const GallerySection = ({
                 );
                 setIsLoadingMore(true);
 
-                // 안전한 상태 변경을 위한 지연
                 setTimeout(() => {
                   setShowMore(!showMore);
                   setIsLoadingMore(false);

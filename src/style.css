@@ -660,6 +660,9 @@ section {
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     margin: 0 20px;
+    /* 터치 스크롤 최적화 */
+    -webkit-overflow-scrolling: touch;
+    overflow-anchor: none;
 }
 
 .gallery-item {
@@ -673,6 +676,9 @@ section {
     background: #f5f5f5; /* 로딩 중 배경색 */
     touch-action: manipulation; /* 모바일 터치 최적화 */
     -webkit-tap-highlight-color: transparent; /* iOS 터치 하이라이트 제거 */
+    -webkit-touch-callout: none; /* iOS 길게 누르기 메뉴 방지 */
+    -webkit-user-select: none; /* 텍스트 선택 방지 */
+    user-select: none; /* 텍스트 선택 방지 */
 }
 
 /* 하이드레이션 전 클릭 방지 */
@@ -764,6 +770,9 @@ section {
     gap: 8px;
     touch-action: manipulation; /* 모바일 터치 최적화 */
     -webkit-tap-highlight-color: transparent; /* iOS 터치 하이라이트 제거 */
+    -webkit-touch-callout: none; /* iOS 길게 누르기 메뉴 방지 */
+    -webkit-user-select: none; /* 텍스트 선택 방지 */
+    user-select: none; /* 텍스트 선택 방지 */
 }
 
 .gallery-more-btn:hover {
