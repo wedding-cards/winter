@@ -1,1 +1,11 @@
+# Assets and static files should be served directly
+/assets/*  /assets/:splat  200
+/static/*  /static/:splat  200
+/manifest.json  /manifest.json  200
+/favicon.*  /favicon.:splat  200
+/robots.txt  /robots.txt  200
+/service-worker.js  /service-worker.js  200
+/sw.js  /sw.js  200
+
+# SPA fallback for all other routes
 /*    /index.html   200

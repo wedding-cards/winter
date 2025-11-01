@@ -44,6 +44,7 @@ const SectionLoader = () => (
 function App() {
   const [showIntro, setShowIntro] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [preloadedImageIndices, setPreloadedImageIndices] = useState(new Set());
 
   useEffect(() => {
     // React 앱이 마운트되면 정적 콘텐츠 숨기기
@@ -57,7 +58,8 @@ function App() {
     }
   }, [showIntro]);
 
-  const handleIntroComplete = () => {
+  const handleIntroComplete = (preloadedIndices) => {
+    setPreloadedImageIndices(preloadedIndices || new Set());
     setShowIntro(false);
   };
 
@@ -80,7 +82,7 @@ function App() {
       <Suspense fallback={<SectionLoader />}>
         <InvitationSection />
         <DateSection />
-        <GallerySection />
+        <GallerySection preloadedImages={preloadedImageIndices} />
         <LocationSection />
         <GuestbookSection />
         <AccountSection />

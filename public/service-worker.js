@@ -1,5 +1,5 @@
 // Service Worker for caching static assets
-const CACHE_NAME = "wedding-invitation-v1";
+const CACHE_NAME = "wedding-invitation-v2"; // 버전 업
 const urlsToCache = [
   "/",
   "/index.html",
@@ -9,6 +9,19 @@ const urlsToCache = [
   "/assets/images/couple-main.jpg",
   "/manifest.json",
   "/favicon.png",
+  // 갤러리 이미지들 (우선순위 높은 것들만 초기 캐싱)
+  "/assets/images/gallery/1.webp",
+  "/assets/images/gallery/1.jpg",
+  "/assets/images/gallery/2.webp",
+  "/assets/images/gallery/2.jpg",
+  "/assets/images/gallery/3.webp",
+  "/assets/images/gallery/3.jpg",
+  "/assets/images/gallery/4.webp",
+  "/assets/images/gallery/4.jpg",
+  "/assets/images/gallery/5.webp",
+  "/assets/images/gallery/5.jpg",
+  "/assets/images/gallery/6.webp",
+  "/assets/images/gallery/6.jpg",
 ];
 
 // Install event - cache static assets
@@ -24,7 +37,7 @@ self.addEventListener("install", (event) => {
         console.log("Cache install failed:", error);
       })
   );
-  self.skipWaiting();
+  // skipWaiting() 제거 - 자동 새로고침 방지
 });
 
 // Fetch event - serve from cache, fallback to network
@@ -32,6 +45,16 @@ self.addEventListener("fetch", (event) => {
   // Skip non-http(s) requests like chrome-extension://
   if (!event.request.url.startsWith("http")) {
     return;
+  }
+
+  // Skip navigation requests for images and assets to prevent SPA redirect issues
+  if (
+    event.request.destination === "image" ||
+    event.request.url.includes("/assets/") ||
+    event.request.url.includes("/static/") ||
+    event.request.url.match(/\.(jpg|jpeg|png|gif|webp|svg|ico)$/i)
+  ) {
+    return fetch(event.request);
   }
 
   event.respondWith(
@@ -88,5 +111,5 @@ self.addEventListener("activate", (event) => {
     })
   );
 
-  return self.clients.claim();
+  // clients.claim() 제거 - 자동 새로고침 방지
 });

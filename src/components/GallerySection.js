@@ -1,33 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import useScrollAnimation from "../hooks/useScrollAnimation";
+import { GALLERY_IMAGES, INITIAL_DISPLAY_COUNT } from "../utils/galleryImages";
 
-// 웨딩 사진들 - 컴포넌트 외부로 이동하여 매 렌더링마다 재생성 방지
-const GALLERY_IMAGES = [
-  "/assets/images/gallery/1.jpg",
-  "/assets/images/gallery/2.jpg",
-  "/assets/images/gallery/3.jpg",
-  "/assets/images/gallery/4.jpg",
-  "/assets/images/gallery/5.jpg",
-  "/assets/images/gallery/6.jpg",
-  "/assets/images/gallery/7.jpg",
-  "/assets/images/gallery/8.jpg",
-  "/assets/images/gallery/9.jpg",
-  "/assets/images/gallery/10.jpg",
-  "/assets/images/gallery/11.jpg",
-  "/assets/images/gallery/12.jpg",
-  "/assets/images/gallery/13.jpg",
-  "/assets/images/gallery/14.jpg",
-  "/assets/images/gallery/15.jpg",
-  "/assets/images/gallery/16.jpg",
-  "/assets/images/gallery/17.jpg",
-  "/assets/images/gallery/18.jpg",
-  "/assets/images/gallery/19.jpg",
-];
-
-const INITIAL_DISPLAY_COUNT = 6;
 const MIN_SWIPE_DISTANCE = 50;
 
-const GallerySection = () => {
+const GallerySection = ({
+  preloadedImages: preloadedFromIntro = new Set(),
+}) => {
   const [galleryRef, galleryVisible] = useScrollAnimation({ threshold: 0.1 });
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -36,6 +15,27 @@ const GallerySection = () => {
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const [preloadedImages, setPreloadedImages] = useState(new Set());
+  const [isReady, setIsReady] = useState(false); // 하이드레이션 완료 상태
+  const [loadedImages, setLoadedImages] = useState(preloadedFromIntro); // IntroScreen에서 프리로딩된 이미지들로 초기화
+  const [isModalOpening, setIsModalOpening] = useState(false); // 모달 열리는 중 상태
+
+  // 하이드레이션 완료 후 상태 설정
+  useEffect(() => {
+    setIsReady(true);
+
+    // IntroScreen에서 프리로딩된 이미지들을 loadedImages에 병합
+    if (preloadedFromIntro.size > 0) {
+      console.log(
+        `🎉 Using ${preloadedFromIntro.size} preloaded images from IntroScreen`
+      );
+      setLoadedImages((prev) => new Set([...prev, ...preloadedFromIntro]));
+    }
+  }, [preloadedFromIntro]);
+
+  // 이미지 로드 완료 핸들러
+  const handleImageLoad = useCallback((index) => {
+    setLoadedImages((prev) => new Set([...prev, index]));
+  }, []);
 
   // 표시할 이미지 메모이제이션
   const displayedImages = useMemo(
@@ -80,11 +80,34 @@ const GallerySection = () => {
     });
   }, [modalOpen, currentImageIndex, preloadImage]);
 
-  const openModal = useCallback((index) => {
-    setCurrentImageIndex(index);
-    setModalOpen(true);
-    document.body.style.overflow = "hidden";
-  }, []);
+  const openModal = useCallback(
+    (index) => {
+      // 하이드레이션 전에는 클릭 무시
+      if (!isReady || isModalOpening || modalOpen) {
+        console.log(
+          "Gallery not ready or modal already opening/open, ignoring click"
+        );
+        return;
+      }
+
+      // 이미지가 아직 로드되지 않은 경우 처리
+      if (!loadedImages.has(index)) {
+        console.log(`Image ${index} not loaded yet, please wait`);
+        return;
+      }
+
+      setIsModalOpening(true);
+
+      // 짧은 딜레이로 중복 클릭 방지
+      setTimeout(() => {
+        setCurrentImageIndex(index);
+        setModalOpen(true);
+        document.body.style.overflow = "hidden";
+        setIsModalOpening(false);
+      }, 50);
+    },
+    [isReady, loadedImages, isModalOpening, modalOpen]
+  );
 
   const closeModal = useCallback(() => {
     setModalOpen(false);
@@ -195,8 +218,22 @@ const GallerySection = () => {
             return (
               <div
                 key={index}
-                className="gallery-item"
-                onClick={() => openModal(index)}
+                className={`gallery-item ${
+                  !isReady || !loadedImages.has(index) ? "not-ready" : ""
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  openModal(index);
+                }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openModal(index);
+                  }
+                }}
               >
                 <picture>
                   <source type="image/webp" srcSet={webpSrc} />
@@ -207,6 +244,14 @@ const GallerySection = () => {
                     } - 결혼식 스냅 사진`}
                     loading="lazy"
                     decoding="async"
+                    onLoad={() => handleImageLoad(index)}
+                    onError={(e) => {
+                      console.log(`Image ${index} failed to load:`, src);
+                      // WebP 실패시 JPG로 폴백
+                      if (e.target.src.includes(".webp")) {
+                        e.target.src = src;
+                      }
+                    }}
                   />
                 </picture>
                 <div className="gallery-overlay">
