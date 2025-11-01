@@ -1,5 +1,5 @@
 // Service Worker for caching static assets
-const CACHE_NAME = "wedding-invitation-v4"; // 206 에러 수정
+const CACHE_NAME = "wedding-invitation-v5"; // 206 에러 완전 수정
 const urlsToCache = [
   "/",
   "/index.html",
@@ -58,14 +58,24 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // 성공한 응답만 캐시에 저장 (206 Partial Response 제외)
-          if (response.ok && response.status === 200) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseClone).catch(() => {
-                // Cache put failed - continue silently
+          // 완전한 응답만 캐시에 저장
+          if (
+            response &&
+            response.ok &&
+            response.status === 200 &&
+            response.type === "basic" &&
+            !response.headers.get("content-range") // Range 응답 제외
+          ) {
+            try {
+              const responseClone = response.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, responseClone).catch(() => {
+                  // Cache put failed - continue silently
+                });
               });
-            });
+            } catch (error) {
+              // Clone failed - continue silently
+            }
           }
           return response;
         })
@@ -91,22 +101,29 @@ self.addEventListener("fetch", (event) => {
             !response ||
             response.status !== 200 ||
             response.type !== "basic" ||
-            response.status === 206 // Partial Content 명시적 제외
+            response.headers.get("content-range") // Range 응답 완전 제외
           ) {
             return response;
           }
 
-          // Clone the response
-          const responseToCache = response.clone();
+          try {
+            // Clone the response
+            const responseToCache = response.clone();
 
-          caches.open(CACHE_NAME).then((cache) => {
-            // Cache GET requests only
-            if (event.request.method === "GET") {
-              cache.put(event.request, responseToCache).catch(() => {
-                // Cache put failed - continue silently
-              });
-            }
-          });
+            caches.open(CACHE_NAME).then((cache) => {
+              // Cache GET requests only
+              if (
+                event.request.method === "GET" &&
+                !event.request.headers.get("range")
+              ) {
+                cache.put(event.request, responseToCache).catch(() => {
+                  // Cache put failed - continue silently
+                });
+              }
+            });
+          } catch (error) {
+            // Clone or cache failed - continue silently
+          }
 
           return response;
         })

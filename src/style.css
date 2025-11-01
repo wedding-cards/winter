@@ -142,6 +142,10 @@ body {
     background-attachment: fixed;
     overflow-x: hidden;
     position: relative;
+    /* 전역 터치 최적화 */
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-x: none;
 }
 
 @keyframes snowfall {
@@ -671,6 +675,9 @@ section {
     /* 터치 스크롤 최적화 */
     -webkit-overflow-scrolling: touch;
     overflow-anchor: none;
+    /* 추가 터치 최적화 */
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
 }
 
 .gallery-item {

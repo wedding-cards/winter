@@ -221,18 +221,13 @@ const GallerySection = ({
                 className={`gallery-item ${
                   !isReady || !loadedImages.has(index) ? "not-ready" : ""
                 }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                onClick={() => {
                   openModal(index);
                 }}
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                onTouchStart={() => {
+                  // Touch start handler
                 }}
-                onTouchEnd={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                onTouchEnd={() => {
                   openModal(index);
                 }}
                 role="button"
@@ -276,10 +271,7 @@ const GallerySection = ({
             <button
               type="button"
               className="gallery-more-btn"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
+              onClick={() => {
                 if (isLoadingMore) return; // 로딩 중이면 무시
 
                 setIsLoadingMore(true);
@@ -290,14 +282,10 @@ const GallerySection = ({
                   setIsLoadingMore(false);
                 }, 100);
               }}
-              onTouchStart={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
+              onTouchStart={() => {
+                // Touch start handler
               }}
-              onTouchEnd={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
+              onTouchEnd={() => {
                 if (isLoadingMore) return;
 
                 setIsLoadingMore(true);

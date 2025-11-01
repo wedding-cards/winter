@@ -73,15 +73,12 @@
 
   <!-- Naver Maps API - 직접 로딩 -->
   <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=r495xzxrv7"></script>
-  
+
   <script>
     // 네이버 지도 API 로딩 확인
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
       if (window.naver && window.naver.maps) {
-        console.log('Naver Maps API loaded successfully');
         window.dispatchEvent(new Event('naverMapsLoaded'));
-      } else {
-        console.error('Failed to load Naver Maps API');
       }
     });
   </script>
@@ -91,7 +88,6 @@
     integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous" onload="
               if (window.Kakao && !window.Kakao.isInitialized()) {
                 window.Kakao.init('567e7c42c3243a0d510faa9b02f3341b');
-                console.log('Kakao SDK 초기화 완료:', window.Kakao.isInitialized());
               }
             "></script>
 
@@ -100,21 +96,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="//oapi.map.naver.com">
   <link rel="dns-prefetch" href="//t1.kakaocdn.net">
-  
-  <!-- Preload critical images -->
-  <link rel="preload" href="%PUBLIC_URL%/assets/images/gallery/1.jpg" as="image">
-  <link rel="preload" href="%PUBLIC_URL%/assets/images/gallery/2.jpg" as="image">
-  
+
+  <!-- Gallery images are preloaded by IntroScreen component -->
+
   <!-- Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         navigator.serviceWorker.register('/sw.js')
-          .then(function(registration) {
-            console.log('SW registered: ', registration);
+          .then(function (registration) {
+            // SW registered successfully
           })
-          .catch(function(registrationError) {
-            console.log('SW registration failed: ', registrationError);
+          .catch(function (registrationError) {
+            // SW registration failed
           });
       });
     }
@@ -168,7 +162,7 @@
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  
+
   <!-- 즉시 렌더링되는 핵심 콘텐츠 -->
   <div id="root">
     <div class="app-loading">
@@ -190,7 +184,7 @@
           </div>
         </div>
       </header>
-      
+
       <!-- 로딩 인디케이터 -->
       <div class="loading-overlay">
         <div class="spinner"></div>
@@ -198,7 +192,7 @@
       </div>
     </div>
   </div>
-  
+
   <style>
     /* 즉시 렌더링을 위한 인라인 CSS */
     .app-loading {
@@ -206,7 +200,7 @@
       line-height: 1.6;
       color: #333;
     }
-    
+
     .main-header {
       background: #FFFFFF;
       padding: 60px 0 40px;
@@ -214,7 +208,7 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .hero-section {
       background: #FFFFFF;
       padding: 60px 20px 40px;
@@ -222,12 +216,12 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .hero-content {
       position: relative;
       z-index: 2;
     }
-    
+
     .wedding-date {
       font-size: 16px;
       color: #D4A5A5;
@@ -235,7 +229,7 @@
       margin-bottom: 20px;
       letter-spacing: 1px;
     }
-    
+
     .couple-names {
       font-size: 42px;
       font-weight: 700;
@@ -244,7 +238,7 @@
       font-family: 'Cormorant Garamond', 'Nanum Myeongjo', serif;
       letter-spacing: 2px;
     }
-    
+
     .wedding-venue {
       font-family: 'Nanum Myeongjo', serif;
       font-size: 17px;
@@ -252,19 +246,20 @@
       font-weight: 600;
       letter-spacing: 1px;
     }
-    
+
     .couple-names .heart {
       color: #d08c95;
       margin: 0 15px;
       font-size: 36px;
     }
-    
-    .groom-name, .bride-name {
+
+    .groom-name,
+    .bride-name {
       font-family: 'Cormorant Garamond', 'Nanum Myeongjo', serif;
       font-weight: 600;
       letter-spacing: 2px;
     }
-    
+
     .wedding-time {
       font-family: 'Nanum Myeongjo', serif;
       font-size: 18px;
@@ -272,12 +267,12 @@
       margin: 15px 0;
       font-weight: 500;
     }
-    
+
     .hero-image {
       margin-top: 40px;
       position: relative;
     }
-    
+
     .hero-image img {
       width: 280px;
       height: 350px;
@@ -285,14 +280,14 @@
       object-fit: cover;
       box-shadow: 0 8px 25px rgba(212, 165, 165, 0.08);
     }
-    
+
     .wedding-message {
       font-size: 16px;
       color: #666;
       line-height: 1.8;
     }
 
-    
+
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -306,7 +301,7 @@
       justify-content: center;
       z-index: 9999;
     }
-    
+
     .spinner {
       width: 40px;
       height: 40px;
@@ -316,17 +311,22 @@
       animation: spin 0.8s linear infinite;
       margin-bottom: 20px;
     }
-    
+
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
-    
+
     .loading-overlay p {
       color: #666;
       font-size: 14px;
     }
-    
+
     @media (max-width: 768px) {
       .couple-names {
         font-size: 2rem;
