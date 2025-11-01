@@ -18,10 +18,15 @@ const GallerySection = ({
   const [isReady, setIsReady] = useState(false); // 하이드레이션 완료 상태
   const [loadedImages, setLoadedImages] = useState(preloadedFromIntro); // IntroScreen에서 프리로딩된 이미지들로 초기화
   const [isModalOpening, setIsModalOpening] = useState(false); // 모달 열리는 중 상태
+  const [isLoadingMore, setIsLoadingMore] = useState(false); // 더보기 로딩 상태
 
   // 하이드레이션 완료 후 상태 설정
   useEffect(() => {
-    setIsReady(true);
+    // 짧은 지연을 통해 완전한 하이드레이션 보장
+    const readyTimer = setTimeout(() => {
+      setIsReady(true);
+      console.log("Gallery is ready for interaction");
+    }, 500);
 
     // IntroScreen에서 프리로딩된 이미지들을 loadedImages에 병합
     if (preloadedFromIntro.size > 0) {
@@ -30,6 +35,8 @@ const GallerySection = ({
       );
       setLoadedImages((prev) => new Set([...prev, ...preloadedFromIntro]));
     }
+
+    return () => clearTimeout(readyTimer);
   }, [preloadedFromIntro]);
 
   // 이미지 로드 완료 핸들러
@@ -37,14 +44,15 @@ const GallerySection = ({
     setLoadedImages((prev) => new Set([...prev, index]));
   }, []);
 
-  // 표시할 이미지 메모이제이션
-  const displayedImages = useMemo(
-    () =>
-      showMore
-        ? GALLERY_IMAGES
-        : GALLERY_IMAGES.slice(0, INITIAL_DISPLAY_COUNT),
-    [showMore]
-  );
+  // 표시할 이미지 메모이제이션 - 안전한 변경을 위한 상태 확인
+  const displayedImages = useMemo(() => {
+    const images = showMore
+      ? GALLERY_IMAGES
+      : GALLERY_IMAGES.slice(0, INITIAL_DISPLAY_COUNT);
+
+    console.log(`Displaying ${images.length} images (showMore: ${showMore})`);
+    return images;
+  }, [showMore]);
 
   // 이미지 미리 로드 함수
   const preloadImage = useCallback(
@@ -87,15 +95,16 @@ const GallerySection = ({
         console.log(
           "Gallery not ready or modal already opening/open, ignoring click"
         );
-        return;
+        return false; // 명시적 false 반환
       }
 
       // 이미지가 아직 로드되지 않은 경우 처리
       if (!loadedImages.has(index)) {
         console.log(`Image ${index} not loaded yet, please wait`);
-        return;
+        return false; // 명시적 false 반환
       }
 
+      console.log(`Opening modal for image ${index}`); // 디버깅용
       setIsModalOpening(true);
 
       // 짧은 딜레이로 중복 클릭 방지
@@ -228,11 +237,16 @@ const GallerySection = ({
                 }}
                 onTouchStart={(e) => {
                   e.preventDefault(); // 모바일 터치 새로고침 방지
+                  console.log(`Touch start on image ${index}`); // 디버깅용
                 }}
                 onTouchEnd={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  openModal(index);
+                  console.log(`Touch end on image ${index}`); // 디버깅용
+                  const result = openModal(index);
+                  if (!result) {
+                    console.log("Modal opening blocked"); // 디버깅용
+                  }
                 }}
                 role="button"
                 tabIndex={0}
@@ -277,16 +291,42 @@ const GallerySection = ({
               className="gallery-more-btn"
               onClick={(e) => {
                 e.preventDefault();
-                setShowMore(!showMore);
+                e.stopPropagation();
+
+                if (isLoadingMore) return; // 로딩 중이면 무시
+
+                console.log("More button clicked, current showMore:", showMore);
+                setIsLoadingMore(true);
+
+                // 안전한 상태 변경을 위한 지연
+                setTimeout(() => {
+                  setShowMore(!showMore);
+                  setIsLoadingMore(false);
+                }, 100);
               }}
               onTouchStart={(e) => {
                 e.preventDefault(); // 모바일 터치 새로고침 방지
+                console.log("Touch start on more button"); // 디버깅용
               }}
               onTouchEnd={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setShowMore(!showMore);
+
+                if (isLoadingMore) return; // 로딩 중이면 무시
+
+                console.log(
+                  "Touch end on more button, current showMore:",
+                  showMore
+                );
+                setIsLoadingMore(true);
+
+                // 안전한 상태 변경을 위한 지연
+                setTimeout(() => {
+                  setShowMore(!showMore);
+                  setIsLoadingMore(false);
+                }, 100);
               }}
+              disabled={isLoadingMore}
             >
               {showMore ? (
                 <>

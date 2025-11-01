@@ -1,37 +1,31 @@
 // Service Worker for caching static assets
-const CACHE_NAME = "wedding-invitation-v2"; // 버전 업
+const CACHE_NAME = "wedding-invitation-v3"; // 버전 업
 const urlsToCache = [
   "/",
   "/index.html",
-  "/static/css/main.css",
-  "/static/js/main.js",
-  "/assets/images/couple-main.webp",
-  "/assets/images/couple-main.jpg",
   "/manifest.json",
-  "/favicon.png",
-  // 갤러리 이미지들 (우선순위 높은 것들만 초기 캐싱)
-  "/assets/images/gallery/1.webp",
-  "/assets/images/gallery/1.jpg",
-  "/assets/images/gallery/2.webp",
-  "/assets/images/gallery/2.jpg",
-  "/assets/images/gallery/3.webp",
-  "/assets/images/gallery/3.jpg",
-  "/assets/images/gallery/4.webp",
-  "/assets/images/gallery/4.jpg",
-  "/assets/images/gallery/5.webp",
-  "/assets/images/gallery/5.jpg",
-  "/assets/images/gallery/6.webp",
-  "/assets/images/gallery/6.jpg",
+  // 정적 파일들은 런타임에 캐시 (초기 캐시에서 제외)
 ];
 
-// Install event - cache static assets
+// Install event - cache only essential files
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
       .then((cache) => {
         console.log("Opened cache");
-        return cache.addAll(urlsToCache);
+        // 필수 파일들만 안전하게 캐시
+        return Promise.allSettled(
+          urlsToCache.map((url) =>
+            fetch(url)
+              .then((response) => {
+                if (response.ok) {
+                  return cache.put(url, response);
+                }
+              })
+              .catch((err) => console.log(`Failed to cache ${url}:`, err))
+          )
+        );
       })
       .catch((error) => {
         console.log("Cache install failed:", error);
@@ -52,9 +46,27 @@ self.addEventListener("fetch", (event) => {
     event.request.destination === "image" ||
     event.request.url.includes("/assets/") ||
     event.request.url.includes("/static/") ||
-    event.request.url.match(/\.(jpg|jpeg|png|gif|webp|svg|ico)$/i)
+    event.request.url.match(/\.(jpg|jpeg|png|gif|webp|svg|ico|css|js)$/i)
   ) {
-    return fetch(event.request);
+    // 이미지와 정적 파일은 네트워크 우선, 캐시 폴백
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // 성공한 응답은 캐시에 저장
+          if (response.ok) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          // 네트워크 실패시 캐시에서 가져오기
+          return caches.match(event.request);
+        })
+    );
+    return;
   }
 
   event.respondWith(
@@ -106,6 +118,7 @@ self.addEventListener("activate", (event) => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
             return caches.delete(cacheName);
           }
+          return Promise.resolve();
         })
       );
     })

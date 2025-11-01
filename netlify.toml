@@ -9,6 +9,22 @@
   to = "/index.html"
   status = 200
 
+# MIME Type 설정 (가장 먼저)
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Content-Type = "text/css; charset=utf-8"
+
+[[headers]]
+  for = "*.webp"
+  [headers.values]
+    Content-Type = "image/webp"
+
 # Headers for better SEO, security and performance
 [[headers]]
   for = "/*"
@@ -31,6 +47,13 @@
   [headers.values]
     # Don't cache service worker
     Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/service-worker.js"
+  [headers.values]
+    # Don't cache service worker
+    Cache-Control = "no-cache"
+    Content-Type = "application/javascript; charset=utf-8"
 
 [[headers]]
   for = "/assets/images/*"
