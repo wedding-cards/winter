@@ -197,7 +197,10 @@ const GallerySection = ({
   }, [currentImageIndex, modalOpen]);
 
   return (
-    <section className="gallery-section">
+    <section
+      className="gallery-section"
+      data-ready={isReady ? "true" : "false"}
+    >
       <div className="container">
         <div className="gallery-header">
           <p className="section-subtitle">GALLERY</p>
@@ -223,10 +226,13 @@ const GallerySection = ({
                   e.stopPropagation();
                   openModal(index);
                 }}
-                onTouchStart={() => {
-                  // Touch start handler
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                 }}
-                onTouchEnd={() => {
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   openModal(index);
                 }}
                 role="button"
@@ -268,6 +274,7 @@ const GallerySection = ({
         {GALLERY_IMAGES.length > INITIAL_DISPLAY_COUNT && (
           <div className="gallery-more-wrapper">
             <button
+              type="button"
               className="gallery-more-btn"
               onClick={(e) => {
                 e.preventDefault();
@@ -283,10 +290,14 @@ const GallerySection = ({
                   setIsLoadingMore(false);
                 }, 100);
               }}
-              onTouchStart={() => {
-                // Touch start handler
+              onTouchStart={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
               }}
-              onTouchEnd={() => {
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
                 if (isLoadingMore) return;
 
                 setIsLoadingMore(true);

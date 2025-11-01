@@ -1,5 +1,5 @@
 // Service Worker for caching static assets
-const CACHE_NAME = "wedding-invitation-v3"; // 버전 업
+const CACHE_NAME = "wedding-invitation-v4"; // 206 에러 수정
 const urlsToCache = [
   "/",
   "/index.html",
@@ -42,6 +42,11 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // Skip Range requests to prevent 206 caching issues
+  if (event.request.headers.get("range")) {
+    return;
+  }
+
   // Skip navigation requests for images and assets to prevent SPA redirect issues
   if (
     event.request.destination === "image" ||
@@ -53,11 +58,13 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // 성공한 응답은 캐시에 저장
-          if (response.ok) {
+          // 성공한 응답만 캐시에 저장 (206 Partial Response 제외)
+          if (response.ok && response.status === 200) {
             const responseClone = response.clone();
             caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseClone);
+              cache.put(event.request, responseClone).catch(() => {
+                // Cache put failed - continue silently
+              });
             });
           }
           return response;
@@ -79,11 +86,12 @@ self.addEventListener("fetch", (event) => {
 
       return fetch(event.request)
         .then((response) => {
-          // Check if we received a valid response
+          // Check if we received a valid response (완전한 응답만 캐시)
           if (
             !response ||
             response.status !== 200 ||
-            response.type !== "basic"
+            response.type !== "basic" ||
+            response.status === 206 // Partial Content 명시적 제외
           ) {
             return response;
           }
@@ -94,7 +102,9 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE_NAME).then((cache) => {
             // Cache GET requests only
             if (event.request.method === "GET") {
-              cache.put(event.request, responseToCache);
+              cache.put(event.request, responseToCache).catch(() => {
+                // Cache put failed - continue silently
+              });
             }
           });
 

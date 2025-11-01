@@ -633,6 +633,14 @@ section {
     background: var(--pure-white);
 }
 
+.gallery-section[data-ready="false"] { pointer-events: none; }
+.gallery-section[data-ready="true"]  { pointer-events: auto;  }
+
+/* 모바일 hover 잔상 제거 (선택) */
+@media (hover: none) and (pointer: coarse) {
+  .gallery-item:hover { transform: none; }
+}
+
 .gallery-header {
     text-align: center;
     margin-bottom: 40px;
