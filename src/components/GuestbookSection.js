@@ -57,7 +57,7 @@ const GuestbookSection = () => {
           JSON.stringify(messagesWithUniqueIds)
         );
       } catch (error) {
-        console.error("Failed to parse guestbook data:", error);
+        // Failed to parse guestbook data - continue silently
         // 파싱 실패 시 기본 메시지로 초기화
         setGuestMessages(SAMPLE_MESSAGES);
         localStorage.setItem(

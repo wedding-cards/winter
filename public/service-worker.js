@@ -13,7 +13,6 @@ self.addEventListener("install", (event) => {
     caches
       .open(CACHE_NAME)
       .then((cache) => {
-        console.log("Opened cache");
         // 필수 파일들만 안전하게 캐시
         return Promise.allSettled(
           urlsToCache.map((url) =>
@@ -23,12 +22,14 @@ self.addEventListener("install", (event) => {
                   return cache.put(url, response);
                 }
               })
-              .catch((err) => console.log(`Failed to cache ${url}:`, err))
+              .catch(() => {
+                // Cache failed - continue silently
+              })
           )
         );
       })
-      .catch((error) => {
-        console.log("Cache install failed:", error);
+      .catch(() => {
+        // Cache install failed - continue silently
       })
   );
   // skipWaiting() 제거 - 자동 새로고침 방지

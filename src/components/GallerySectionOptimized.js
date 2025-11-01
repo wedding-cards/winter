@@ -29,22 +29,22 @@ const MIN_SWIPE_DISTANCE = 50;
 
 // WebP 지원 여부 확인
 const supportsWebP = () => {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = 1;
   canvas.height = 1;
-  return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+  return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0;
 };
 
 // 이미지 소스 최적화 함수
-const getOptimizedImageSrc = (src, size = 'thumbnail') => {
+const getOptimizedImageSrc = (src, size = "thumbnail") => {
   const isWebPSupported = supportsWebP();
-  const extension = isWebPSupported ? '.webp' : '.jpg';
-  
-  if (size === 'thumbnail') {
-    return src.replace('.jpg', `_thumb${extension}`);
+  const extension = isWebPSupported ? ".webp" : ".jpg";
+
+  if (size === "thumbnail") {
+    return src.replace(".jpg", `_thumb${extension}`);
   }
-  
-  return isWebPSupported ? src.replace('.jpg', '.webp') : src;
+
+  return isWebPSupported ? src.replace(".jpg", ".webp") : src;
 };
 
 // 이미지 프리로딩 함수
@@ -64,18 +64,20 @@ const preloadImages = (imageSources, onProgress) => {
           resolve(src);
         };
         fallbackImg.onerror = () => resolve(src);
-        fallbackImg.src = src.replace('.webp', '.jpg');
+        fallbackImg.src = src.replace(".webp", ".jpg");
       };
       img.src = getOptimizedImageSrc(src);
     });
   });
-  
+
   return Promise.all(promises);
 };
 
 // 최적화된 이미지 컴포넌트
 const OptimizedImage = ({ src, alt, onClick, className, loading = "lazy" }) => {
-  const [imageSrc, setImageSrc] = useState(getOptimizedImageSrc(src, 'thumbnail'));
+  const [imageSrc, setImageSrc] = useState(
+    getOptimizedImageSrc(src, "thumbnail")
+  );
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -92,7 +94,7 @@ const OptimizedImage = ({ src, alt, onClick, className, loading = "lazy" }) => {
   };
 
   return (
-    <div className={`image-container ${className} ${isLoaded ? 'loaded' : ''}`}>
+    <div className={`image-container ${className} ${isLoaded ? "loaded" : ""}`}>
       <img
         src={imageSrc}
         alt={alt}
@@ -102,7 +104,7 @@ const OptimizedImage = ({ src, alt, onClick, className, loading = "lazy" }) => {
         loading={loading}
         style={{
           opacity: isLoaded ? 1 : 0,
-          transition: 'opacity 0.3s ease-in-out',
+          transition: "opacity 0.3s ease-in-out",
         }}
       />
       {!isLoaded && (
@@ -139,15 +141,15 @@ const GallerySection = () => {
     if (!showMore) {
       setIsPreloading(true);
       const additionalImages = GALLERY_IMAGES.slice(INITIAL_DISPLAY_COUNT);
-      
+
       try {
         await preloadImages(additionalImages, (loaded, total) => {
           setLoadingProgress((loaded / total) * 100);
         });
       } catch (error) {
-        console.warn('일부 이미지 프리로딩 실패:', error);
+        // 일부 이미지 프리로딩 실패 - continue silently
       }
-      
+
       setIsPreloading(false);
       setShowMore(true);
     } else {
@@ -247,7 +249,7 @@ const GallerySection = () => {
         {/* 더 보기/접기 버튼 */}
         <div className="gallery-actions">
           <button
-            className={`show-more-btn ${isPreloading ? 'loading' : ''}`}
+            className={`show-more-btn ${isPreloading ? "loading" : ""}`}
             onClick={handleShowMore}
             disabled={isPreloading}
           >
@@ -259,7 +261,9 @@ const GallerySection = () => {
             ) : showMore ? (
               "사진 접기"
             ) : (
-              `더 많은 사진 보기 (+${GALLERY_IMAGES.length - INITIAL_DISPLAY_COUNT})`
+              `더 많은 사진 보기 (+${
+                GALLERY_IMAGES.length - INITIAL_DISPLAY_COUNT
+              })`
             )}
           </button>
         </div>
@@ -394,7 +398,12 @@ const GallerySection = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+          background: linear-gradient(
+            90deg,
+            #f0f0f0 25%,
+            #e0e0e0 50%,
+            #f0f0f0 75%
+          );
           background-size: 200% 100%;
         }
 
@@ -405,8 +414,12 @@ const GallerySection = () => {
         }
 
         @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
         }
 
         .gallery-actions {
@@ -414,7 +427,7 @@ const GallerySection = () => {
         }
 
         .show-more-btn {
-          background: linear-gradient(135deg, #D4A5A5 0%, #C89DA1 100%);
+          background: linear-gradient(135deg, #d4a5a5 0%, #c89da1 100%);
           color: white;
           border: none;
           padding: 15px 40px;
@@ -432,7 +445,7 @@ const GallerySection = () => {
         }
 
         .show-more-btn:hover:not(:disabled) {
-          background: linear-gradient(135deg, #C89DA1 0%, #B8919A 100%);
+          background: linear-gradient(135deg, #c89da1 0%, #b8919a 100%);
           transform: translateY(-2px);
           box-shadow: 0 8px 25px rgba(212, 165, 165, 0.4);
         }
@@ -452,8 +465,12 @@ const GallerySection = () => {
         }
 
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
 
         /* 모달 스타일 */
@@ -473,8 +490,12 @@ const GallerySection = () => {
         }
 
         @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
 
         .modal-content {

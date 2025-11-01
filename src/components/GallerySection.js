@@ -25,14 +25,10 @@ const GallerySection = ({
     // 짧은 지연을 통해 완전한 하이드레이션 보장
     const readyTimer = setTimeout(() => {
       setIsReady(true);
-      console.log("Gallery is ready for interaction");
     }, 500);
 
     // IntroScreen에서 프리로딩된 이미지들을 loadedImages에 병합
     if (preloadedFromIntro.size > 0) {
-      console.log(
-        `🎉 Using ${preloadedFromIntro.size} preloaded images from IntroScreen`
-      );
       setLoadedImages((prev) => new Set([...prev, ...preloadedFromIntro]));
     }
 
@@ -50,11 +46,8 @@ const GallerySection = ({
       ? GALLERY_IMAGES
       : GALLERY_IMAGES.slice(0, INITIAL_DISPLAY_COUNT);
 
-    console.log(`Displaying ${images.length} images (showMore: ${showMore})`);
     return images;
-  }, [showMore]);
-
-  // 이미지 미리 로드 함수
+  }, [showMore]); // 이미지 미리 로드 함수
   const preloadImage = useCallback(
     (src) => {
       if (preloadedImages.has(src)) return;
@@ -92,19 +85,14 @@ const GallerySection = ({
     (index) => {
       // 하이드레이션 전에는 클릭 무시
       if (!isReady || isModalOpening || modalOpen) {
-        console.log(
-          "Gallery not ready or modal already opening/open, ignoring click"
-        );
         return false; // 명시적 false 반환
       }
 
       // 이미지가 아직 로드되지 않은 경우 처리
       if (!loadedImages.has(index)) {
-        console.log(`Image ${index} not loaded yet, please wait`);
         return false; // 명시적 false 반환
       }
 
-      console.log(`Opening modal for image ${index}`); // 디버깅용
       setIsModalOpening(true);
 
       // 짧은 딜레이로 중복 클릭 방지
@@ -236,14 +224,10 @@ const GallerySection = ({
                   openModal(index);
                 }}
                 onTouchStart={() => {
-                  console.log(`Touch start on image ${index}`);
+                  // Touch start handler
                 }}
                 onTouchEnd={() => {
-                  console.log(`Touch end on image ${index}`);
-                  const result = openModal(index);
-                  if (!result) {
-                    console.log("Modal opening blocked");
-                  }
+                  openModal(index);
                 }}
                 role="button"
                 tabIndex={0}
@@ -265,7 +249,6 @@ const GallerySection = ({
                     decoding="async"
                     onLoad={() => handleImageLoad(index)}
                     onError={(e) => {
-                      console.log(`Image ${index} failed to load:`, src);
                       // WebP 실패시 JPG로 폴백
                       if (e.target.src.includes(".webp")) {
                         e.target.src = src;
@@ -292,7 +275,6 @@ const GallerySection = ({
 
                 if (isLoadingMore) return; // 로딩 중이면 무시
 
-                console.log("More button clicked, current showMore:", showMore);
                 setIsLoadingMore(true);
 
                 // 안전한 상태 변경을 위한 지연
@@ -302,15 +284,11 @@ const GallerySection = ({
                 }, 100);
               }}
               onTouchStart={() => {
-                console.log("Touch start on more button");
+                // Touch start handler
               }}
               onTouchEnd={() => {
                 if (isLoadingMore) return;
 
-                console.log(
-                  "Touch end on more button, current showMore:",
-                  showMore
-                );
                 setIsLoadingMore(true);
 
                 setTimeout(() => {

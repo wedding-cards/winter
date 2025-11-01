@@ -22,11 +22,6 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker
       .register("/service-worker.js")
       .then((registration) => {
-        console.log(
-          "Service Worker registered successfully:",
-          registration.scope
-        );
-
         // 업데이트 감지 및 사용자 동의형 업데이트
         registration.addEventListener("updatefound", () => {
           const newWorker = registration.installing;
@@ -38,9 +33,6 @@ if ("serviceWorker" in navigator) {
                 navigator.serviceWorker.controller
               ) {
                 // 자동 새로고침 대신 사용자에게 알림
-                console.log(
-                  "새 버전이 사용 가능합니다. 페이지를 새로고침하면 적용됩니다."
-                );
                 // 필요시 여기에 토스트 알림이나 업데이트 버튼 추가 가능
                 // showUpdateAvailableNotification();
               }
@@ -48,8 +40,8 @@ if ("serviceWorker" in navigator) {
           }
         });
       })
-      .catch((error) => {
-        console.log("Service Worker registration failed:", error);
+      .catch(() => {
+        // Service Worker registration failed - continue silently
       });
   });
 }

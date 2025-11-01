@@ -25,7 +25,6 @@ const IntroScreen = ({ onComplete }) => {
 
       try {
         // 높은 우선순위 이미지들 먼저 로드
-        console.log("🖼️ Starting high priority image preload...");
         await preloadImages(priorities.high, (loaded, total, index) => {
           const progress = Math.round((loaded / total) * 50); // 50%까지
           setPreloadProgress(progress);
@@ -34,7 +33,6 @@ const IntroScreen = ({ onComplete }) => {
         });
 
         // 낮은 우선순위 이미지들 백그라운드에서 로드
-        console.log("🖼️ Starting low priority image preload...");
         await preloadImages(priorities.low, (loaded, total, index) => {
           const progress = 50 + Math.round((loaded / total) * 50); // 50%~100%
           setPreloadProgress(progress);
@@ -43,7 +41,6 @@ const IntroScreen = ({ onComplete }) => {
           setPreloadedIndices((prev) => new Set([...prev, actualIndex]));
         });
 
-        console.log("🎉 All gallery images preloaded!");
         setIsPreloading(false);
 
         // 프리로딩 완료 후 1초 대기하고 타이핑 애니메이션 시작
@@ -51,7 +48,6 @@ const IntroScreen = ({ onComplete }) => {
           setShowTyping(true);
         }, 1000);
       } catch (error) {
-        console.error("Image preloading failed:", error);
         setIsPreloading(false);
         // 에러 시에도 타이핑 애니메이션 시작
         setTimeout(() => {
