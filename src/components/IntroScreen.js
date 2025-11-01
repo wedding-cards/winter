@@ -7,6 +7,7 @@ const IntroScreen = ({ onComplete }) => {
   const [preloadProgress, setPreloadProgress] = useState(0);
   const [isPreloading, setIsPreloading] = useState(true);
   const [preloadedIndices, setPreloadedIndices] = useState(new Set());
+  const [showTyping, setShowTyping] = useState(false); // 타이핑 애니메이션 표시 여부
 
   const fullText = useMemo(() => "민석 ♥ 수진 결혼식에 초대합니다", []);
 
@@ -34,27 +35,38 @@ const IntroScreen = ({ onComplete }) => {
 
         // 낮은 우선순위 이미지들 백그라운드에서 로드
         console.log("🖼️ Starting low priority image preload...");
-        preloadImages(priorities.low, (loaded, total, index) => {
+        await preloadImages(priorities.low, (loaded, total, index) => {
           const progress = 50 + Math.round((loaded / total) * 50); // 50%~100%
           setPreloadProgress(progress);
           // 로드된 이미지 인덱스 저장 (높은 우선순위 이미지 개수만큼 오프셋 추가)
           const actualIndex = index + priorities.high.length;
           setPreloadedIndices((prev) => new Set([...prev, actualIndex]));
-        }).then(() => {
-          console.log("🎉 All gallery images preloaded!");
-          setIsPreloading(false);
         });
+
+        console.log("🎉 All gallery images preloaded!");
+        setIsPreloading(false);
+
+        // 프리로딩 완료 후 1초 대기하고 타이핑 애니메이션 시작
+        setTimeout(() => {
+          setShowTyping(true);
+        }, 1000);
       } catch (error) {
         console.error("Image preloading failed:", error);
         setIsPreloading(false);
+        // 에러 시에도 타이핑 애니메이션 시작
+        setTimeout(() => {
+          setShowTyping(true);
+        }, 1000);
       }
     };
 
     startPreloading();
   }, []);
 
-  // 타이핑 애니메이션
+  // 타이핑 애니메이션 - 프리로딩 완료 후에만 시작
   useEffect(() => {
+    if (!showTyping) return;
+
     let index = 0;
     const timer = setInterval(() => {
       if (index < fullText.length) {
@@ -62,46 +74,41 @@ const IntroScreen = ({ onComplete }) => {
         index++;
       } else {
         clearInterval(timer);
-        // 높은 우선순위 이미지 로딩이 완료되거나 최소 시간이 지나면 완료
+        // 타이핑 완료 후 2초 대기하고 메인 페이지로 이동
         setTimeout(() => {
-          if (!isPreloading || preloadProgress >= 50) {
-            handleComplete();
-          } else {
-            // 프리로딩이 끝날 때까지 조금 더 기다림
-            const waitTimer = setInterval(() => {
-              if (!isPreloading || preloadProgress >= 50) {
-                clearInterval(waitTimer);
-                handleComplete();
-              }
-            }, 200);
-          }
-        }, 1500); // 최소 1.5초는 대기
+          handleComplete();
+        }, 2000);
       }
     }, 100);
 
     return () => clearInterval(timer);
-  }, [fullText, handleComplete, isPreloading, preloadProgress]);
+  }, [fullText, handleComplete, showTyping]);
 
   return (
     <div className={`intro-screen ${isComplete ? "fade-out" : ""}`}>
       <div className="intro-content">
-        <div className="intro-text">
-          {currentText}
-          <span className="cursor">|</span>
-        </div>
+        {/* 프리로딩 단계 */}
+        {isPreloading && (
+          <div className="preload-stage">
+            <div className="preload-progress">
+              <div className="preload-bar">
+                <div
+                  className="preload-fill"
+                  style={{ width: `${preloadProgress}%` }}
+                ></div>
+              </div>
+              <div className="preload-text">
+                결혼식 준비중... {preloadProgress}%
+              </div>
+            </div>
+          </div>
+        )}
 
-        {/* 프리로딩 진행률 표시 (선택적) */}
-        {isPreloading && preloadProgress > 0 && (
-          <div className="preload-progress">
-            <div className="preload-bar">
-              <div
-                className="preload-fill"
-                style={{ width: `${preloadProgress}%` }}
-              ></div>
-            </div>
-            <div className="preload-text">
-              이미지 준비중... {preloadProgress}%
-            </div>
+        {/* 타이핑 애니메이션 단계 */}
+        {showTyping && (
+          <div className="intro-text">
+            {currentText}
+            <span className="cursor">|</span>
           </div>
         )}
       </div>

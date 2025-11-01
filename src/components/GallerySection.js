@@ -226,6 +226,14 @@ const GallerySection = ({
                   e.stopPropagation();
                   openModal(index);
                 }}
+                onTouchStart={(e) => {
+                  e.preventDefault(); // 모바일 터치 새로고침 방지
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  openModal(index);
+                }}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -269,6 +277,14 @@ const GallerySection = ({
               className="gallery-more-btn"
               onClick={(e) => {
                 e.preventDefault();
+                setShowMore(!showMore);
+              }}
+              onTouchStart={(e) => {
+                e.preventDefault(); // 모바일 터치 새로고침 방지
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 setShowMore(!showMore);
               }}
             >
