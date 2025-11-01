@@ -381,7 +381,7 @@ body[style*="overflow: hidden"] section {
 
 .hero-image img {
     width: 280px;
-    height: 350px;
+    height: 400px;
     border-radius: 20px;
     object-fit: cover;
     box-shadow: 0 8px 25px var(--light-shadow);
