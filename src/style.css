@@ -698,8 +698,19 @@ section {
 
 /* 하이드레이션 전 클릭 방지 */
 .gallery-item.not-ready {
+    pointer-events: none !important;
+    opacity: 0.6;
+    cursor: not-allowed !important;
+    touch-action: none !important;
+}
+
+/* 갤러리 확장 중 전체 보호 */
+.gallery-section.expanding .gallery-item {
+    pointer-events: none !important;
+}
+
+.gallery-section.expanding .gallery-more-btn {
     pointer-events: none;
-    opacity: 0.7;
 }
 
 .gallery-item img {
@@ -2542,5 +2553,80 @@ section {
     .wreath-send-btn {
         padding: 16px 25px;
         font-size: 16px;
+    }
+}
+
+/* 방명록 데이터베이스 연동 관련 스타일 */
+.message-error {
+    background-color: #ffe6e6;
+    border: 1px solid #ff9999;
+    color: #cc0000;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.message-error p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.message-success {
+    background-color: #e6ffe6;
+    border: 1px solid #99ff99;
+    color: #006600;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.message-success p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.loading-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.no-messages {
+    text-align: center;
+    padding: 40px 20px;
+    color: #888;
+}
+
+.guestbook-form button:disabled {
+    background-color: #ccc !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+}
+
+.guestbook-form button:disabled:hover {
+    background-color: #ccc !important;
+    transform: none;
+}
+
+.guestbook-form textarea:disabled,
+.guestbook-form input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.7;
+    border-color: #ddd;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

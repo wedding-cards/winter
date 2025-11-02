@@ -19,6 +19,7 @@ const GallerySection = ({
   const [loadedImages, setLoadedImages] = useState(preloadedFromIntro); // IntroScreen에서 프리로딩된 이미지들로 초기화
   const [isModalOpening, setIsModalOpening] = useState(false); // 모달 열리는 중 상태
   const [isLoadingMore, setIsLoadingMore] = useState(false); // 더보기 로딩 상태
+  const [isExpandingGallery, setIsExpandingGallery] = useState(false); // 갤러리 확장 중 상태
 
   // 하이드레이션 완료 후 상태 설정
   useEffect(() => {
@@ -39,6 +40,43 @@ const GallerySection = ({
   const handleImageLoad = useCallback((index) => {
     setLoadedImages((prev) => new Set([...prev, index]));
   }, []);
+
+  // 추가 이미지들을 미리 로드하는 함수
+  const preloadAdditionalImages = useCallback(async () => {
+    const additionalImages = GALLERY_IMAGES.slice(INITIAL_DISPLAY_COUNT);
+    const loadPromises = additionalImages.map((src, idx) => {
+      const actualIndex = INITIAL_DISPLAY_COUNT + idx;
+
+      return new Promise((resolve) => {
+        const img = new Image();
+        const webpSrc = src.replace(".jpg", ".webp");
+
+        img.onload = () => {
+          handleImageLoad(actualIndex);
+          resolve(actualIndex);
+        };
+
+        img.onerror = () => {
+          // WebP 실패시 JPG 시도
+          const fallbackImg = new Image();
+          fallbackImg.onload = () => {
+            handleImageLoad(actualIndex);
+            resolve(actualIndex);
+          };
+          fallbackImg.onerror = () => resolve(actualIndex); // 실패해도 계속 진행
+          fallbackImg.src = src;
+        };
+
+        img.src = webpSrc;
+      });
+    });
+
+    // 모든 이미지 로드 완료 또는 최대 3초 대기
+    await Promise.race([
+      Promise.all(loadPromises),
+      new Promise((resolve) => setTimeout(resolve, 3000)),
+    ]);
+  }, [handleImageLoad]);
 
   // 표시할 이미지 메모이제이션 - 안전한 변경을 위한 상태 확인
   const displayedImages = useMemo(() => {
@@ -198,7 +236,7 @@ const GallerySection = ({
 
   return (
     <section
-      className="gallery-section"
+      className={`gallery-section ${isExpandingGallery ? "expanding" : ""}`}
       data-ready={isReady ? "true" : "false"}
     >
       <div className="container">
@@ -219,7 +257,9 @@ const GallerySection = ({
               <div
                 key={index}
                 className={`gallery-item ${
-                  !isReady || !loadedImages.has(index) ? "not-ready" : ""
+                  !isReady || !loadedImages.has(index) || isExpandingGallery
+                    ? "not-ready"
+                    : ""
                 }`}
                 onClick={() => {
                   openModal(index);
@@ -271,33 +311,51 @@ const GallerySection = ({
             <button
               type="button"
               className="gallery-more-btn"
-              onClick={() => {
-                if (isLoadingMore) return; // 로딩 중이면 무시
+              onClick={async () => {
+                if (isLoadingMore || isExpandingGallery) return; // 로딩 중이면 무시
 
                 setIsLoadingMore(true);
+                setIsExpandingGallery(true);
 
-                // 안전한 상태 변경을 위한 지연
+                if (!showMore) {
+                  // 더보기 클릭시: 추가 이미지들을 미리 로드
+                  await preloadAdditionalImages();
+                }
+
+                // 안전한 상태 변경
                 setTimeout(() => {
                   setShowMore(!showMore);
                   setIsLoadingMore(false);
-                }, 100);
+                  setIsExpandingGallery(false);
+                }, 200);
               }}
               onTouchStart={() => {
                 // Touch start handler
               }}
-              onTouchEnd={() => {
-                if (isLoadingMore) return;
+              onTouchEnd={async () => {
+                if (isLoadingMore || isExpandingGallery) return;
 
                 setIsLoadingMore(true);
+                setIsExpandingGallery(true);
+
+                if (!showMore) {
+                  // 더보기 터치시: 추가 이미지들을 미리 로드
+                  await preloadAdditionalImages();
+                }
 
                 setTimeout(() => {
                   setShowMore(!showMore);
                   setIsLoadingMore(false);
-                }, 100);
+                  setIsExpandingGallery(false);
+                }, 200);
               }}
-              disabled={isLoadingMore}
+              disabled={isLoadingMore || isExpandingGallery}
             >
-              {showMore ? (
+              {isLoadingMore || isExpandingGallery ? (
+                <>
+                  로딩중... <i className="fas fa-spinner fa-spin"></i>
+                </>
+              ) : showMore ? (
                 <>
                   접기 <i className="fas fa-chevron-up"></i>
                 </>

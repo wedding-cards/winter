@@ -1,38 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
+import {
+  addGuestbookMessage,
+  getGuestbookMessages,
+  validateMessage,
+} from "../firebase/guestbook";
 import useScrollAnimation from "../hooks/useScrollAnimation";
-
-// 고유한 ID 생성 함수
-const generateUniqueId = () => {
-  return Date.now() + Math.random().toString(36).substr(2, 9);
-};
-
-// ID 중복 확인 및 수정 함수
-const ensureUniqueIds = (messages) => {
-  const seenIds = new Set();
-  return messages.map((msg) => {
-    if (seenIds.has(msg.id) || !msg.id) {
-      msg.id = generateUniqueId();
-    }
-    seenIds.add(msg.id);
-    return msg;
-  });
-};
-
-// 샘플 방명록 메시지
-const SAMPLE_MESSAGES = [
-  {
-    name: "최원정",
-    message: "너무 아름다운 커플이에요~ 평생 행복하세요! 🎉",
-    date: "2025-10-14",
-    id: generateUniqueId(),
-  },
-  {
-    name: "임경민",
-    message: "민석아 결혼 축하한다! 행복한 가정 만들어 나가길 응원할게 👏",
-    date: "2025-10-17",
-    id: generateUniqueId(),
-  },
-];
 
 const GuestbookSection = () => {
   const [sectionRef, sectionVisible] = useScrollAnimation({ threshold: 0.2 });
@@ -42,67 +14,74 @@ const GuestbookSection = () => {
     name: "",
     message: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [successMessage, setSuccessMessage] = useState("");
 
-  useEffect(() => {
-    // 로컬 스토리지에서 기존 메시지 로드
-    const saved = localStorage.getItem("wedding-guestbook");
-    if (saved) {
-      try {
-        const parsedMessages = JSON.parse(saved);
-        const messagesWithUniqueIds = ensureUniqueIds(parsedMessages);
-        setGuestMessages(messagesWithUniqueIds);
-        // 수정된 데이터를 다시 저장
-        localStorage.setItem(
-          "wedding-guestbook",
-          JSON.stringify(messagesWithUniqueIds)
-        );
-      } catch (error) {
-        // Failed to parse guestbook data - continue silently
-        // 파싱 실패 시 기본 메시지로 초기화
-        setGuestMessages(SAMPLE_MESSAGES);
-        localStorage.setItem(
-          "wedding-guestbook",
-          JSON.stringify(SAMPLE_MESSAGES)
-        );
+  // 메시지 로드 함수 (Firebase만 사용)
+  const loadMessages = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // Firebase에서 메시지 조회
+      const result = await getGuestbookMessages();
+      if (result.success && result.messages.length > 0) {
+        setGuestMessages(result.messages);
+      } else {
+        // 데이터가 없거나 조회 실패 시 빈 배열
+        setGuestMessages([]);
       }
-    } else {
-      setGuestMessages(SAMPLE_MESSAGES);
-      localStorage.setItem(
-        "wedding-guestbook",
-        JSON.stringify(SAMPLE_MESSAGES)
-      );
+    } catch (error) {
+      // 에러 발생 시 빈 배열
+      setGuestMessages([]);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
-  const addGuestMessage = useCallback(() => {
-    if (!newMessage.name || !newMessage.message) {
-      alert("이름과 메시지를 입력해주세요.");
+  useEffect(() => {
+    loadMessages();
+  }, [loadMessages]);
+
+  const addGuestMessage = useCallback(async () => {
+    // 입력 검증
+    const validation = validateMessage(newMessage.name, newMessage.message);
+    if (!validation.isValid) {
+      setErrors(validation.errors);
+      setTimeout(() => setErrors([]), 5000);
       return;
     }
 
-    if (newMessage.message.length > 200) {
-      alert("메시지는 200자 이내로 입력해주세요.");
-      return;
+    setIsSaving(true);
+    setErrors([]);
+    setSuccessMessage("");
+
+    try {
+      // Firebase에 저장
+      const result = await addGuestbookMessage(newMessage);
+
+      if (result.success) {
+        // Firebase 저장 성공
+        setSuccessMessage("메시지가 성공적으로 등록되었습니다! 💕");
+        setNewMessage({ name: "", message: "" });
+
+        // 메시지 목록 새로고침
+        await loadMessages();
+
+        setTimeout(() => setSuccessMessage(""), 3000);
+      } else {
+        // Firebase 저장 실패
+        setErrors(["메시지 저장에 실패했습니다. 다시 시도해주세요."]);
+        setTimeout(() => setErrors([]), 5000);
+      }
+    } catch (error) {
+      // 에러 발생
+      setErrors(["메시지 저장에 실패했습니다. 다시 시도해주세요."]);
+      setTimeout(() => setErrors([]), 5000);
+    } finally {
+      setIsSaving(false);
     }
-
-    const messageToAdd = {
-      ...newMessage,
-      date: new Date().toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }),
-      id: generateUniqueId(),
-    };
-
-    const updatedMessages = [messageToAdd, ...guestMessages];
-    setGuestMessages(updatedMessages);
-    localStorage.setItem("wedding-guestbook", JSON.stringify(updatedMessages));
-
-    // 입력 필드 초기화
-    setNewMessage({ name: "", message: "" });
-    alert("축하 메시지가 등록되었습니다!");
-  }, [newMessage, guestMessages]);
+  }, [newMessage, loadMessages]);
 
   const handleInputChange = useCallback((field, value) => {
     setNewMessage((prev) => ({
@@ -122,30 +101,69 @@ const GuestbookSection = () => {
             sectionVisible ? "visible" : ""
           }`}
         >
+          {/* 에러 메시지 표시 */}
+          {errors.length > 0 && (
+            <div className="message-error">
+              {errors.map((error, index) => (
+                <p key={index}>{error}</p>
+              ))}
+            </div>
+          )}
+
+          {/* 성공 메시지 표시 */}
+          {successMessage && (
+            <div className="message-success">
+              <p>{successMessage}</p>
+            </div>
+          )}
+
           <textarea
             value={newMessage.message}
             onChange={(e) => handleInputChange("message", e.target.value)}
-            placeholder="축하의 메시지를 남겨주세요"
+            placeholder="축하의 메시지를 남겨주세요 (200자 이내)"
+            maxLength="200"
+            disabled={isSaving}
           />
           <input
             type="text"
             value={newMessage.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
-            placeholder="이름"
+            placeholder="이름 (20자 이내)"
+            maxLength="20"
+            disabled={isSaving}
           />
-          <button onClick={addGuestMessage}>메시지 남기기</button>
+          <button
+            onClick={addGuestMessage}
+            disabled={
+              isSaving || !newMessage.name.trim() || !newMessage.message.trim()
+            }
+          >
+            {isSaving ? "저장 중..." : "메시지 남기기"}
+          </button>
         </div>
 
         <div className="guestbook-messages">
-          {guestMessages.map((msg) => (
-            <div key={msg.id} className="guest-message fade-in">
-              <div className="message-header">
-                <span className="message-author">{msg.name}</span>
-                <span className="message-date">{msg.date}</span>
-              </div>
-              <div className="message-content">{msg.message}</div>
+          {isLoading ? (
+            <div className="loading-message">
+              <p>메시지를 불러오는 중...</p>
             </div>
-          ))}
+          ) : guestMessages.length > 0 ? (
+            guestMessages.map((msg) => (
+              <div key={msg.id} className="guest-message fade-in">
+                <div className="message-header">
+                  <span className="message-author">{msg.name}</span>
+                  <span className="message-date">{msg.date}</span>
+                </div>
+                <div className="message-content">{msg.message}</div>
+              </div>
+            ))
+          ) : (
+            <div className="no-messages">
+              <p>
+                아직 등록된 메시지가 없습니다. 첫 번째 축하 메시지를 남겨보세요!
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>
