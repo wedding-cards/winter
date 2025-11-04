@@ -96,22 +96,46 @@ const LocationSection = () => {
   }, []);
 
   const handleNavigation = useCallback((type) => {
-    const address = "서울 강남구 논현로79길 72 세인트 메리엘";
     const placeName = "세인트 메리엘";
+    const address = "서울 강남구 논현로79길 72";
+    const lat = "37.496105";
+    const lng = "127.033005";
 
     let url = "";
 
     switch (type) {
       case "naver":
-        url = `https://map.naver.com/v5/search/${encodeURIComponent(address)}`;
+        // 네이버 지도 - 장소 검색 및 길찾기
+        url = `https://map.naver.com/p/search/${encodeURIComponent(
+          placeName + " " + address
+        )}`;
         break;
       case "kakao":
-        url = `https://map.kakao.com/?q=${encodeURIComponent(address)}`;
+        // 카카오맵 - 목적지 설정 (길찾기)
+        url = `https://map.kakao.com/link/to/${encodeURIComponent(
+          placeName
+        )},${lat},${lng}`;
         break;
       case "tmap":
-        url = `https://tmap.life/route?goalname=${encodeURIComponent(
+        // 티맵 - 목적지 설정 (앱 우선, 웹 폴백)
+        const tmapAppUrl = `tmap://route?goalname=${encodeURIComponent(
           placeName
-        )}&goalx=127.0363793&goaly=37.5028461`;
+        )}&goalx=${lng}&goaly=${lat}`;
+        const tmapWebUrl = `https://tmap.life/route/car?goalname=${encodeURIComponent(
+          placeName
+        )}&goalx=${lng}&goaly=${lat}`;
+
+        // 모바일에서 앱 실행 시도
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          window.location.href = tmapAppUrl;
+          // 앱이 없을 경우 웹으로 폴백
+          setTimeout(() => {
+            window.open(tmapWebUrl, "_blank");
+          }, 1500);
+          return;
+        } else {
+          url = tmapWebUrl;
+        }
         break;
       default:
         return;
@@ -165,14 +189,14 @@ const LocationSection = () => {
             className="nav-link kakao"
             onClick={() => handleNavigation("kakao")}
           >
-            <i className="fas fa-car"></i>
-            <span>카카오내비</span>
+            <i className="fas fa-route"></i>
+            <span>카카오맵</span>
           </button>
           <button
             className="nav-link tmap"
             onClick={() => handleNavigation("tmap")}
           >
-            <i className="fas fa-route"></i>
+            <i className="fas fa-car"></i>
             <span>티맵</span>
           </button>
         </div>
