@@ -313,7 +313,7 @@ const GallerySection = ({
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [modalOpen, changeImage, closeModal]);
 
-  // 터치 스와이프 (모바일) - 메모리 최적화
+  // 터치 스와이프 (모바일) - 메모리 최적화 및 모달 전체 적용
   const onTouchStart = useCallback((e) => {
     // 페이지 새로고침 방지
     if (e.touches.length > 1) {
@@ -333,8 +333,8 @@ const GallerySection = ({
       const currentTouch = e.targetTouches[0].clientX;
       setTouchEnd(currentTouch);
 
-      // 수직 스크롤 방지 (모달에서만)
-      if (modalOpen) {
+      // 모달에서 수직 스크롤 방지 및 가로 드래그 허용
+      if (modalOpen && Math.abs(touchStart - currentTouch) > 10) {
         e.preventDefault();
       }
     },
@@ -356,9 +356,9 @@ const GallerySection = ({
         // 디바운싱으로 중복 실행 방지
         requestAnimationFrame(() => {
           if (isLeftSwipe) {
-            changeImage(1);
+            changeImage(-1); // 왼쪽 스와이프 시 이전 이미지
           } else if (isRightSwipe) {
-            changeImage(-1);
+            changeImage(1); // 오른쪽 스와이프 시 다음 이미지
           }
         });
       }
@@ -369,6 +369,27 @@ const GallerySection = ({
     },
     [touchStart, touchEnd, changeImage]
   );
+
+  // 모달 전체에 터치 이벤트 적용
+  useEffect(() => {
+    if (!modalOpen) return;
+
+    const modalElement = document.querySelector('.gallery-modal');
+    if (!modalElement) return;
+
+    // passive: false로 설정하여 preventDefault 사용 가능하게 함
+    const touchOptions = { passive: false };
+
+    modalElement.addEventListener('touchstart', onTouchStart, touchOptions);
+    modalElement.addEventListener('touchmove', onTouchMove, touchOptions);
+    modalElement.addEventListener('touchend', onTouchEnd, touchOptions);
+
+    return () => {
+      modalElement.removeEventListener('touchstart', onTouchStart);
+      modalElement.removeEventListener('touchmove', onTouchMove);
+      modalElement.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [modalOpen, onTouchStart, onTouchMove, onTouchEnd]);
 
   // 썸네일 자동 스크롤 - 현재 이미지로 이동
   useEffect(() => {
@@ -450,11 +471,6 @@ const GallerySection = ({
                       e.target.dataset.fallbackTried = "true";
                       e.target.src = src;
                     }
-                  }}
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                    objectFit: "cover",
                   }}
                 />
                 <div className="gallery-overlay">
@@ -540,7 +556,11 @@ const GallerySection = ({
 
         {/* 갤러리 모달 */}
         {modalOpen && (
-          <div className="gallery-modal" onClick={closeModal}>
+          <div 
+            className="gallery-modal" 
+            onClick={closeModal}
+            style={{ touchAction: 'pan-y pinch-zoom' }} // 세로 스크롤과 줌만 허용
+          >
             <span
               className="close-modal"
               onClick={(e) => {
@@ -554,9 +574,6 @@ const GallerySection = ({
             <div
               className="modal-content-wrapper"
               onClick={(e) => e.stopPropagation()}
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
             >
               <img
                 className="modal-main-image"

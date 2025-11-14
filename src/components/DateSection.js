@@ -115,9 +115,10 @@ const DateSection = () => {
         </div>
 
         {/* 깔끔한 카운트다운 - 한 줄 배치 */}
+        {/* countdown-clean 하트 이벤트 제거 */}
         <div
           ref={countdownRef}
-          className={`countdown-clean animate-scale ${
+          className={`animate-scale ${
             countdownVisible ? "visible" : ""
           }`}
         >
